@@ -22,15 +22,11 @@
 // @import url("//hello.myfonts.net/count/32af98");
 @font-face {
   font-family:'FuturaLTPro-Book';
-  // src : url('../font/futura/32AF98_0_0.ttf') format('truetype');
-  // src: url('../font/futura/32AF98_0_0.eot');
   src: url('../font/futura/futurabt-book.otf') format('opentype');
-  // src: url('../font/futura/32AF98_0_0.eot?#iefix') format('embedded-opentype'),url('../font/futura/32AF98_0_0.woff2') format('woff2'),url('../font/futura/32AF98_0_0.woff') format('woff'),url('../font/futura/32AF98_0_0.ttf') format('truetype');
 }
 
-body { 
+html { 
   font-family: 'FuturaLTPro-Book','NotoSans-Regular', "游ゴシック" , "Yu Gothic" , "游ゴシック体" , "YuGothic" , "ヒラギノ角ゴ Pro W3" , "Hiragino Kaku Gothic Pro" ,"Meiryo UI" , "メイリオ" ,"Meiryo" , "ＭＳ Ｐゴシック" , "MS PGothic",sans-serif; 
   font-size: 14px; 
-  // text-rendering: optimizeLegibility; 
-  // -webkit-font-smoothing: antialiased; 
+  text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased;
 }

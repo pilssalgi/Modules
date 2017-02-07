@@ -18,5 +18,4 @@ gulp.task('js',function(){
   .pipe(uglify())
   .pipe(gulp.dest(dest))
   .pipe(browserSync.reload({stream:true}));
-
 });

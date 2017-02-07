@@ -120,7 +120,6 @@ table { border-collapse: collapse; border-spacing: 0; }
 *   BASE
 ********************************************************** */
 
-html { font-family: 'Montserrat', sans-serif; font-size: 14px; /*text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; */}
 body { background-color: white; color: black; }
 
 html, body { width: 100%; }
@@ -145,46 +144,5 @@ label { cursor: pointer; }
 
 
 /* ************************************************************
-    demo
+  demo
 ************************************************************ */
-.select-style {
-    position: absolute;
-    padding: 0;
-    margin: 0;
-    opacity: 0.5;
-    border: 1px solid #ccc;
-    width: 120px;
-    border-radius: 3px;
-    overflow: hidden;
-    background-color: #fff;
-
-    background: #fff url("http://www.scottgood.com/jsg/blog.nsf/images/arrowdown.gif") no-repeat 90% 50%;
-}
-
-.select-style select {
-    padding: 0 8px;
-    width: 100%;
-    border: none;
-    box-shadow: none;
-    background-color: transparent;
-    background-image: none;
-    -webkit-appearance: none;
-       -moz-appearance: none;
-            appearance: none;
-}
-
-.select-style select:focus {
-    outline: none;
-}
-
-.clearfix {
-  *zoom: 1; }
-
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: "";
-  line-height: 0; }
-
-.clearfix:after {
-  clear: both; }
