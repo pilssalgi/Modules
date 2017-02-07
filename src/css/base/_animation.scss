@@ -1,0 +1,47 @@
+.anim-underline {
+  $transition:cubic-bezier(.37,.07,.14,1);
+  position:relative;
+  overflow: hidden;
+  padding-bottom: 2px;
+  cursor: pointer;
+  box-sizing:border-box;
+  &:before{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 1px;
+    width: 0;
+    background-color: #fff;
+    transition: width 0s $transition;
+    pointer-events: none;
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    width: 0;
+    background-color: #fff;
+    transition: width 0.4s $transition;
+    pointer-events: none;
+  }
+}
+
+.animUnderLineOn {
+  .anim-underline {
+    $transition:cubic-bezier(.37,.07,.14,1);
+    &:before{
+      width: 100%;
+      transition: width 0.4s $transition;
+    }
+
+    &:after {
+      width: 100%;
+      background: transparent !important;
+      transition: all 0s $transition;
+    }  
+  }
+}

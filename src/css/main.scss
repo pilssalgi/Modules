@@ -1,0 +1,16 @@
+@import 'base/normalize';
+@import 'base/convert-function';
+@import 'base/font';
+@import 'base/breakpoint';
+@import 'base/transition';
+@import 'base/animation';
+@import 'base/depth';
+
+html,body {
+  width:100%;
+
+  /* To smooth any scrolling behavior */
+  // overflow-y: scroll;
+  // -webkit-overflow-scrolling: touch;
+}
+

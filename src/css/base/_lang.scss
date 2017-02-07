@@ -1,0 +1,32 @@
+html:lang(en){
+  .lang-jp {
+    display: none !important;
+  }
+  .lang-en-navi{
+    pointer-events: none;
+    .anim-underline {
+      &:before,&:after{
+        width: 100%;
+      }
+    }
+  }
+}
+
+html:lang(jp){
+  .lang-en {
+    display: none !important;
+  }
+
+  .lang-jp-navi{
+    pointer-events: none;
+    .anim-underline {
+      &:before,&:after{
+        width: 100%;
+      }
+    }
+  }
+}
+
+.lang-jp-navi,.lang-en-navi {
+  cursor:pointer;
+}
