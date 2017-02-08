@@ -19,8 +19,7 @@ var SelfPosition = function(target){
 }
 
 
-SelfPosition.prototype._setup = function(target){
-  this.target = target;
+SelfPosition.prototype._setup = function(){
   this.resize = Bind(this.resize,this);
   $(window).on('resize',this.resize);
   this.resize();  
@@ -28,19 +27,19 @@ SelfPosition.prototype._setup = function(target){
 }
 SelfPosition.prototype.resize = function(){
   this.stageSize      = windowSize();
-  this.offset.height  = this.target.height();
-  this.offset.left    = this.target.offset().left;
-  this.offset.top     = this.target.offset().top;
-  this._update(document.body.scrollTop || document.documentElement.scrollTop);
+  this.clientRect     = this.target.getBoundingClientRect();
+  this._update();
 }
 
 SelfPosition.prototype._update = function(scrollY){
-  if(Math.abs(this.clientRect.top) < this.stageSize.height*1.5){
+  this.clientRect = this.target.getBoundingClientRect();
+  if(this.clientRect.top < this.stageSize.height*1.5){
     this.isFar = false;
   }else{
     this.isFar = true;
   }
-  this.progress = 1-(this.clientRect.top+this.offset.height)/(this.stageSize.height+this.offset.height);
+
+  this.progress = 1-((this.clientRect.top+this.clientRect.height)/(this.stageSize.height+this.clientRect.height));
   if(this.progress >= 0 && this.progress <= 1){
     this.isStageIn = true;
   }else{

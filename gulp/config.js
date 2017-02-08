@@ -14,6 +14,7 @@ module.exports = {
   copy: {
     src : [
       'src/**/*',
+      '!src/**/index.js',
       '!src/**/base',
       '!src/**/include',
       '!src/**/include/**',

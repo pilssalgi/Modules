@@ -9,7 +9,8 @@ var browserSync = require('browser-sync');
 var handleErrors = require('../lib/handleErrors');
 
 var dest = path.join(config.base.dest, config.js.dest);
-
+var path_example = 'src/examples/',
+    dest_example = 'public/examples/'
 gulp.task('js',function(){
   browserify('src/js/index.js')
   .bundle().on('error', handleErrors)
@@ -18,4 +19,14 @@ gulp.task('js',function(){
   .pipe(uglify())
   .pipe(gulp.dest(dest))
   .pipe(browserSync.reload({stream:true}));
+
+  browserify(path_example+'parallax/js/index.js')
+  .bundle().on('error', handleErrors)
+  .pipe(source('index.js'))
+  .pipe(buffer())
+  .pipe(uglify())
+  .pipe(gulp.dest(dest_example+'parallax/js/'))
+  .pipe(browserSync.reload({stream:true}));
+
 });
+
