@@ -1,5 +1,8 @@
-var Bind = require('../util/Bind');
-var FakeScroll = function(target,scroll,speed,option){
+var $     = require('jQuery');
+var UA    = require('../info/UA')();
+var Bind  = require('../util/Bind');
+var debounce = require('lodash.debounce');
+var FakeScroll = function(target,speed,option){
   var windowSize  = require('../util/WindowSize');
   this.name     = 'FakeScroll';
   this.height   = 0;
@@ -10,7 +13,7 @@ var FakeScroll = function(target,scroll,speed,option){
   var screenSize = windowSize();
   var _this = this;
   var config = {isTop:true};
-  var scroll = {y:0};
+  var scroll = {y:0,power:0};
   var ticking = false;
   if(option)$.extend(config,option);
   /* ************************************************************
@@ -18,66 +21,56 @@ var FakeScroll = function(target,scroll,speed,option){
   ************************************************************ */
   function setup(){
     $(window).on('scroll',onScroll);
-    $('body').css({height:$scrollTarget.outerHeight()});
-
-    $(window).on('resize',function(){
+    target.style.position = 'fixed';
+    update = Bind(update,this);
+    $(window).on('resize', debounce(function(){
       screenSize = windowSize();
       _this.sizeUpdate();
+    }, 10));
+
+    $(window).on('SmoothScrollUpdate', function(){
+      _this.sizeUpdate();
     });
+
+    _this.sizeUpdate();
   }
 
   function onScroll(){
+    scroll.power += 100;
+    scroll.y = window.pageYOffset || document.documentElement.scrollTop;
     if(!ticking){
-      update();
+      requestAnimationFrame(update);
     }
     ticking = true;
   }
+
+  
   /* ************************************************************
     Rendering
   ************************************************************ */
   function update(){
-    requestAnimationFrame(function(){
-      scroll.y = window.pageYOffset || document.documentElement.scrollTop;
-      _this.position.y += (scroll.y-_this.position.y)*_this.speed;
-      _this.position.y = Number(_this.position.y.toFixed(2));
-      var distance = Math.abs(_this.position.y-scroll.y);
-      if(distance < .1){
-        // _this.position.y = Math.floor(scroll.y);
-        _this.positionUpdate();
-        ticking = false;
-      }else{
-        update();
-      }
-      
-      if(_this.position.y != _this.position.oldY){
-        _this.positionUpdate();
-      }
+    this.position.y += (scroll.y-this.position.y)*this.speed;
+    this.position.y = Number(this.position.y.toFixed(1));
+    var dis = (scroll.y-this.position.y);
+    if(dis < 1 && dis > -1){
+      this.positionUpdate();
+      ticking = false;
+    }else{
+      requestAnimationFrame(update);
+    }
 
-      _this.position.oldY = _this.position.y;
-    });
+    this.positionUpdate();
+    this.position.oldY = this.position.y;
   }
 
   this.sizeUpdate = function(){
-    this.height = $scrollTarget.outerHeight();
+    this.height = $(this.target).height();
     $('body').css({height:this.height});
+    _this.positionUpdate();
   }
 
   this.positionUpdate = function(){
     this.target.style.transform ="translate3d(0px,"+(-this.position.y)+"px,0)";//this.translate3d(0,-this.position.y+'px',0);
-  }
-
-
-  /* ************************************************************
-      
-  ************************************************************ */
-  
-  this.translate3d = function(x,y,z){
-    var css3 = "translate3d("+x+","+y+","+z+")";
-    return css3;
-    // return {
-    //   "-webkit-transform" : css3,
-    //   "transform"         : css3
-    // };
   }
 
   setup.call(this);

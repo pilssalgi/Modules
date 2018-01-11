@@ -1,4 +1,4 @@
-var SelfPosition = require('./SelfPosition');
+var SelfPosition = require('../layout/SelfPosition');
 var Parallax = function($dom,scroll,option){
   this.target = $dom;
   this.over = false;

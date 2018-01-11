@@ -5,7 +5,7 @@ author : Heowongeun
 ************************************************************ */
 var DragAndDrop = require('./DragAndDrop');
 var Bind        = require('../util/Bind');
-var windowSize  = require('../WindowSize');
+var windowSize  = require('../util/WindowSize');
 var throttle    = require('throttle-debounce/throttle');
 function ScrollBar($btn,$wrap,option){
   this.btn        = $btn;
@@ -14,69 +14,88 @@ function ScrollBar($btn,$wrap,option){
   this.isMoving   = false;
 
   this.config = {
-    direction : 'x',
+    direction       : 'x',
     bounceFriction  : 0.2,
-    dragSpeed : 0.2,
-    update:function(){},
-    end:function(){}
+    dragSpeed       : 0.2,
+    update          : function(){},
+    end             : function(){}
   };
 
   $.extend(this.config,option);
 
-  this.drag      = {x:0,y:0,old:{x:0,y:0}};
+  this.drag         = {x:0,y:0,vf:0,old:{x:0,y:0}};
   this.position     = {x:0,y:0,oldX:0,normal:{x:0,y:0}};
   this.fakePosition = {x:0,y:0,oldX:0};
 
   var $fakeBtn;
-  var renderID = undefined;
-  var maxWidth = 0, maxHeight = 0;
   var $win = $(window);
+  var maxWidth = 0, maxHeight = 0;
+  var ticking = false;
   
   function setup(){
-    this.onDragStart    = Bind(this.onDragStart,this);
-    this.onDragMove     = Bind(this.onDragMove,this);
-    this.onDragStop     = Bind(this.onDragStop,this);
-    this.barClick       = Bind(this.barClick,this);
+    onDragStart    = Bind(onDragStart,this);
+    onDragMove     = Bind(onDragMove,this);
+    onDragStop     = Bind(onDragStop,this);
+    barClick       = Bind(barClick,this);
 
-    onRender  = Bind(onRender,this);
+    update    = Bind(update,this);
     onResize  = Bind(onResize,this);
-    $fakeBtn  = $('<figure></figure>');
+    // $fakeBtn  = $('<figure></figure>');
     // $btn.after($fakeBtn);
-    $fakeBtn.css({
-      position:'absolute',
-      background:'red',
-      left:$btn.css('left'),
-      top:$btn.css('top'),
-      marginLeft:$btn.css('marginLeft'),
-      marginTop:$btn.css('marginTop'),
-      cursor:'pointer',
-      zIndex:10
-    });
+    // $fakeBtn.css({
+    //   position:'absolute',
+    //   background:'red',
+    //   left:$btn.css('left'),
+    //   top:$btn.css('top'),
+    //   marginLeft:$btn.css('marginLeft'),
+    //   marginTop:$btn.css('marginTop'),
+    //   cursor:'pointer',
+    //   zIndex:10
+    // });
 
     $win.on('resize',throttle(10,onResize,false));
     // this.wrap.on('click',this.barClick);
     onResize();
 
     new DragAndDrop($btn,{
-      onStart:this.onDragStart,
-      onMove:this.onDragMove,
-      onEnd:this.onDragStop
+      onStart:onDragStart,
+      onMove:onDragMove,
+      onEnd:onDragStop
     });
   }
 
-  this.barClick = function(e){
+  function onDragStart(e){
+    this.btn.addClass('scrollHover');
+    this.drag.old.x = this.drag.x;
+    this.isDrag = true;
+    if(!ticking){
+      requestAnimationFrame(update);
+      ticking = true;
+    }
+  }
+  function onDragMove(e){
+    this.isMoving = true;
+    this.drag.x = -e.distance.x+this.drag.old.x;
+  }
+  function onDragStop(e){
+    this.isDrag = false;
+    this.isMoving = false;
+    this.btn.removeClass('scrollHover');
+    console.log('stop');
+  }
+
+
+  function barClick(e){
     this.drag.x = e.offsetX;
-    this.renderStart();
   }
 
   function onResize(){
-    maxWidth  = this.wrap.width();
+    maxWidth  = this.wrap.width()-$btn.width();
     maxHeight = this.wrap.height();
     // $fakeBtn.css({width:$btn.width(),height:$btn.height()});
   }
 
-  function onRender(){
-    renderID = requestAnimationFrame(onRender);
+  function update(){
     this.fakePosition.x = this.drag.x;
 
     if(this.fakePosition.x < 0)this.fakePosition.x = 0;
@@ -84,35 +103,26 @@ function ScrollBar($btn,$wrap,option){
     // TweenLite.set($fakeBtn,{x:this.fakePosition.x,y:this.fakePosition.y});
 
     this.position.x += (this.fakePosition.x-this.position.x)*this.config.dragSpeed;
-    this.position.y += (this.fakePosition.y-this.position.y)*this.config.dragSpeed;
-    TweenLite.set(this.btn,{x:this.position.x,y:this.position.y});
+    // this.position.y += (this.fakePosition.y-this.position.y)*this.config.dragSpeed;
 
-    var disX = this.position.x-this.fakePosition.x,
-        disY = this.position.y-this.fakePosition.y,
-        dis = Math.sqrt(disX*disX+disY*disY);
-
-    if(dis<0.01 && !this.isDrag){
-      this.renderStop();
-      this.config.end();
-    }
-    if(dis<0.1){
-      this.position.x = this.fakePosition.x;
-      this.position.y = this.fakePosition.y;
-    }
+    this.btn[0].style.transform = this.transition(this.position.x,0,0);
+    var distance = Math.abs(this.position.x-this.fakePosition.x);
 
     this.position.normal.x = this.position.x/maxWidth;
-    this.position.normal.y = this.position.y/maxHeight;
+    // this.position.normal.y = this.position.y/maxHeight;
     this.config.update(this.position);
+    
+    if(distance<0.01 && !this.isDrag){
+      ticking = false;
+      this.config.end();
+    }else{
+      requestAnimationFrame(update);
+    }
 
   }
 
-  this.renderStart = function(){
-    if(!renderID)renderID = requestAnimationFrame(onRender);
-  }
-
-  this.renderStop = function(){
-    cancelAnimationFrame(renderID);
-    renderID = null;
+  this.transition = function(x,y,z){
+    return 'translate3d('+x+'px,'+y+'px,'+z+'px)';
   }
 
   this.setX = function(normal){
@@ -128,20 +138,4 @@ function ScrollBar($btn,$wrap,option){
   return this;
 };
 
-ScrollBar.prototype.onDragStart  = function(e){
-  this.btn.addClass('scrollHover');
-  this.renderStart();
-  this.drag.old.x = this.drag.x;
-  this.isDrag = true;
-}
-ScrollBar.prototype.onDragMove   = function(e){
-  this.isMoving = true;
-  this.drag.x = -e.distance.x+this.drag.old.x;
-  if(this.btn.hasClass('scrollHover'))this.btn.addClass('scrollHover');
-}
-ScrollBar.prototype.onDragStop   = function(e){
-  this.isDrag = false;
-  this.isMoving = false;
-  this.btn.removeClass('scrollHover');
-}
 module.exports = ScrollBar;

@@ -1,6 +1,6 @@
 (function() {
   var UA = function(){
-    var e, t, n, r, u;
+    var e, t, n, r, u, nv;
     u   = navigator.userAgent;
     r   = navigator.userAgent.toLowerCase();
     nv  = window.navigator;
@@ -61,6 +61,7 @@
 
     if (r.indexOf("applewebkit") > -1 && r.indexOf("edge") > -1){
       t.isEdge = true;
+      t.isIE = true;
     };
 
     if (t.isIPhone = /i(phone|pod)/.test(r)) {

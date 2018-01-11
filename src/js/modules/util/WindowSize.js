@@ -16,6 +16,7 @@ var WindowSize = function(){
 
   size.halfX = size.width * 0.5;
   size.halfY = size.height * 0.5;
+  size.aspect = size.width/size.height;
   return size;
 }
 

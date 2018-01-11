@@ -7,7 +7,7 @@
 
 (function(){
   var Util = {};
-  var UA = require('./UA')();
+  var UA = require('../info/UA')();
   if(typeof Heo == 'undefined')Heo = {};
   Heo.Util = Util;
   Util._bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };

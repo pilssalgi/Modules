@@ -1,8 +1,8 @@
-var $           = require('jQuery');
-var SelfPosition = require('./SelfPosition');
-var StageInOut = function($dom,option){
-  // this.target = $dom[0];
+var SelfPosition = require('../layout/SelfPosition');
+var StageInOut = function($dom,scroll,option){
+  this.target = $dom;
   this.isIn = false;
+
   var config = {
     offsetIn:0,
     offsetOut:0
@@ -11,14 +11,13 @@ var StageInOut = function($dom,option){
   $.extend(config,option);
 
   function setup(){
-    this.__proto__ = new SelfPosition($dom[0]);
+    this.__proto__ = new SelfPosition($dom);
+    this.resize();
     return this;
   }
 
   this.update = function(){
-    this._update();
-    // var rect = this.target.getBoundingClientRect();
-    // console.log(1-(rect.top+rect.height)/(window.innerHeight+rect.height));
+    this._update(scroll.y);
 
     if(this.progress > config.offsetIn && this.progress < 1-config.offsetIn){
       if(!this.isIn){
@@ -37,10 +36,10 @@ var StageInOut = function($dom,option){
   }
 
   this.in = function(){
-    console.log('in');
+
   }
   this.out = function(){
-    console.log('out');
+
   }
 
   setup.call(this);

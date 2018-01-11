@@ -1,3 +1,4 @@
+var $  = require('jQuery');
 var UA = require('../info/UA')();
 var DragAndDrop = function(target,config){
   var touchMoveOffset = 0,
@@ -36,7 +37,7 @@ var DragAndDrop = function(target,config){
   }
 
   function onStart(e){
-    if(UA.isPC)e.preventDefault();
+    e.preventDefault();
     infos.start     = getPageInfo(e);
     infos.move      = {x:0,y:0};
     infos.end       = {x:0,y:0};
@@ -55,7 +56,6 @@ var DragAndDrop = function(target,config){
   }
 
   function onMove(e){
-    // e.preventDefault();
     infos.move = getPageInfo(e);
     infos.distance.x = infos.start.x - infos.move.x;
     infos.distance.y = infos.start.y - infos.move.y;
