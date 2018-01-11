@@ -1,5 +1,6 @@
 (function () {
   var SelfPosition = require('../../../js/modules/parallax/SelfPosition');
+  var FakeScroll  = require('../../../js/modules/ui/FakeScroll');
   var throttle    = require('throttle-debounce/throttle');
   function getRandomImage(tags,callBack){
     $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?",
@@ -17,13 +18,14 @@
   }
 
   var wrap = $('.wrap'),
+      wrapIn = $('.wrap-inner'),
       imgs = [];
   var top = 0, scrollTop = 0;
   getRandomImage('mountain',function(datas){
     for(var i=0; i<datas.length; i++){
 
-      var imgWrap = $('<article class="img-wrap"></article>').appendTo(wrap);
-      imgWrap.css({maxWidth:Math.floor(Math.random()*400+300)});
+      var imgWrap = $('<article class="img-wrap"></article>').appendTo(wrapIn);
+      // imgWrap.css({maxWidth:Math.floor(Math.random()*400+300)});
       var img = document.createElement("img");
       img.src = datas[i].url;
       img.onload = function(){
@@ -39,8 +41,9 @@
   });
 
   function setup(){
-    $(window).on('scroll',onScroll);
-    update();
+    // $(window).on('scroll',onScroll);
+    new FakeScroll(wrapIn[0],0.05);
+    // update();
   }
 
   var ticking = false;

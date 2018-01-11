@@ -1,7 +1,7 @@
 var $     = require('jQuery');
 var UA    = require('../info/UA')();
 var Bind  = require('../util/Bind');
-var debounce = require('lodash.debounce');
+var debounce = require('lodash/debounce');
 var FakeScroll = function(target,speed,option){
   var windowSize  = require('../util/WindowSize');
   this.name     = 'FakeScroll';

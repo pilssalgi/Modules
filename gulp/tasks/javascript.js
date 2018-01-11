@@ -9,24 +9,30 @@ var browserSync = require('browser-sync');
 var handleErrors = require('../lib/handleErrors');
 
 var dest = path.join(config.base.dest, config.js.dest);
-var path_example = 'src/examples/',
-    dest_example = 'public/examples/'
-gulp.task('js',function(){
-  browserify('src/js/index.js')
-  .bundle().on('error', handleErrors)
-  .pipe(source('index.js'))
-  .pipe(buffer())
-  .pipe(uglify())
-  .pipe(gulp.dest(dest))
-  .pipe(browserSync.reload({stream:true}));
 
-  browserify(path_example+'parallax/js/index.js')
-  .bundle().on('error', handleErrors)
-  .pipe(source('index.js'))
-  .pipe(buffer())
-  .pipe(uglify())
-  .pipe(gulp.dest(dest_example+'parallax/js/'))
-  .pipe(browserSync.reload({stream:true}));
+gulp.task('js',function(){
+  // browserify('src/js/index.js')
+  // .bundle().on('error', handleErrors)
+  // .pipe(source('index.js'))
+  // .pipe(buffer())
+  // .pipe(uglify())
+  // .pipe(gulp.dest(dest))
+  // .pipe(browserSync.reload({stream:true}));
+
+  for(var i=0; i<config.js.files.length; i++){
+    var url = config.js.files[i];
+    var arr   = url.split('/');
+    var name  = arr.pop();
+    var dest  = arr.join('/')+'/'
+    dest = dest.replace('src','public');
+
+    browserify(url)
+    .bundle().on('error', handleErrors)
+    .pipe(source(name))
+    .pipe(buffer())
+    .pipe(uglify())
+    .pipe(gulp.dest(dest))
+    .pipe(browserSync.reload({stream:true}));
+  }
 
 });
-

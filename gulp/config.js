@@ -8,7 +8,11 @@ module.exports = {
     src   : 'js',
     dest  : 'js',
     watch : 'src/**/*.js',
-    files : ['src/js/index.js']
+    files : [
+      'src/js/index.js',
+      'src/examples/parallax/js/index.js',
+      'src/examples/fakescroll/js/index.js'
+      ]
   },
 
   copy: {
