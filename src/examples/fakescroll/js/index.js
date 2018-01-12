@@ -42,7 +42,7 @@
 
   function setup(){
     // $(window).on('scroll',onScroll);
-    new FakeScroll(wrapIn[0],0.05);
+    new FakeScroll(wrapIn[0],0.1);
     // update();
   }
 
