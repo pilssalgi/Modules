@@ -21,6 +21,7 @@
       wrapIn = $('.wrap-inner'),
       imgs = [];
   var top = 0, scrollTop = 0;
+  var loadedCount = 0;
   getRandomImage('mountain',function(datas){
     for(var i=0; i<datas.length; i++){
 
@@ -28,16 +29,19 @@
       // imgWrap.css({maxWidth:Math.floor(Math.random()*400+300)});
       var img = document.createElement("img");
       img.src = datas[i].url;
+      imgWrap.append(img);
       img.onload = function(){
         $(this).attr({width:this.width,height:this.height});
+        loadedCount++;
+        if(loadedCount == datas.length){
+          setup();
+          setTimeout(function(){$(window).trigger('resize');},500);
+        }
       }
-
-      imgWrap.append(img);
       var title = $('<h3>'+datas[i].title+'</h3>').appendTo(imgWrap);
       imgs.push({wrap:imgWrap,img:img,y:0,titleY:0,title:title[0],self:new SelfPosition(img)._setup()});
 
     }
-    setup();
   });
 
   function setup(){

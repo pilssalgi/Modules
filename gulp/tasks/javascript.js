@@ -1,38 +1,41 @@
-var gulp        = require('gulp');
-var config      = require('../config');
-var path        = require('path');
-var uglify      = require('gulp-uglify');
-var browserify  = require('browserify');
-var source      = require('vinyl-source-stream');
-var buffer      = require('vinyl-buffer');
-var browserSync = require('browser-sync');
-var handleErrors = require('../lib/handleErrors');
-
-var dest = path.join(config.base.dest, config.js.dest);
+let gulp          = require('gulp');
+let config        = require('../config');
+let path          = require('path');
+let uglify        = require('gulp-uglify');
+let browserify    = require('browserify');
+let source        = require('vinyl-source-stream');
+let buffer        = require('vinyl-buffer');
+let browserSync   = require('browser-sync');
+let handleErrors  = require('../lib/handleErrors');
+let babelify      = require('babelify');
+let dest          = path.join(config.base.dest, config.js.dest);
 
 gulp.task('js',function(){
-  // browserify('src/js/index.js')
-  // .bundle().on('error', handleErrors)
-  // .pipe(source('index.js'))
-  // .pipe(buffer())
-  // .pipe(uglify())
-  // .pipe(gulp.dest(dest))
-  // .pipe(browserSync.reload({stream:true}));
-
-  for(var i=0; i<config.js.files.length; i++){
+  for(var i=0,n = config.js.files.length; i<n; i++){
     var url = config.js.files[i];
     var arr   = url.split('/');
     var name  = arr.pop();
     var dest  = arr.join('/')+'/'
     dest = dest.replace('src','public');
-
-    browserify(url)
-    .bundle().on('error', handleErrors)
-    .pipe(source(name))
-    .pipe(buffer())
-    .pipe(uglify())
-    .pipe(gulp.dest(dest))
-    .pipe(browserSync.reload({stream:true}));
+    if(i<n-1){
+      browserify(url,{ debug: true })
+        .transform(babelify)
+        .bundle()
+        .pipe(source(name))
+        .pipe(buffer())
+        .pipe(uglify())
+        .on('error', handleErrors)
+        .pipe(gulp.dest(dest))
+    }else{
+      browserify(url,{ debug: true })
+      .transform(babelify)
+      .bundle()
+      .pipe(source(name))
+      .pipe(buffer())
+      .pipe(uglify())
+      .on('error', handleErrors)
+      .pipe(gulp.dest(dest))
+      .pipe(browserSync.stream())
+    }
   }
-
 });
