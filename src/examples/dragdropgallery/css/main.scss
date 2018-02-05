@@ -1,0 +1,85 @@
+@import '../../../css/base/normalize';
+html,body {
+  width:100%;
+  height: 100%;
+  background-color: #333;
+}
+
+main {
+  width:100%; 
+  overflow:hidden;
+}
+
+.dragAndDrop {
+  .dragAndDrop_in {
+    display: inline-flex;
+
+    .dragAndDrop_item {
+      width:300px;
+      box-sizing:border-box;
+
+      img {
+        width:100%;
+      }
+
+      p {
+        margin-top: 10px;
+        color:#ddd;
+      }
+    }
+  }
+
+  .arrs {
+    display: inline-flex;
+    margin:30px 10px;
+    margin-top: 0;
+  }
+  .arrL,.arrR {
+    position:relative;
+    width:20px; height:20px;
+    cursor:pointer;
+    text-align: center;
+    color:#fff;
+    background-color: #555;
+  }
+
+  .arrL {
+    margin-right:10px;
+  }
+}
+
+.dragAndDropLeft {
+  margin-left:20%;
+  width:80%;
+  padding:5vw 0;
+  border:solid 1px #ddf;
+
+  .dragAndDrop_item {
+    padding-right:20px;
+  }
+
+}
+
+.dragAndDropRight {
+  margin-right:20%;
+  width:80%;
+  padding:5vw 0;
+  border:solid 1px #adf;
+
+  .dragAndDrop_in {
+    flex-direction: row-reverse;
+  } 
+
+  .arrs {
+    float:right;
+  }
+  
+  .dragAndDrop_item {
+    padding-left:20px;
+  }
+  // .dragAndDrop_item:first-child {
+  //   padding:0;
+  // }
+
+
+}

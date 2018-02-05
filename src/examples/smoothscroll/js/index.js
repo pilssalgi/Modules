@@ -1,12 +1,11 @@
 (function () {
   var SelfPosition = require('../../../js/modules/parallax/SelfPosition');
   var FakeScroll  = require('../../../js/modules/ui/FakeScroll');
-  var throttle    = require('throttle-debounce/throttle');
+  var throttle    = require('lodash/throttle');
   function getRandomImage(tags,callBack){
     $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?",
     { tags: tags,tagmode: "any",format: "json" },
     function(data) {
-        var rnd = Math.floor(Math.random() * data.items.length);
         var imgs = [];
         for(var i=0; i<data.items.length; i++){
           var url = data.items[i].media.m.replace('_m','_b');
@@ -22,7 +21,7 @@
       imgs = [];
   var top = 0, scrollTop = 0;
   var loadedCount = 0;
-  getRandomImage('mountain',function(datas){
+  getRandomImage('tokyo',function(datas){
     for(var i=0; i<datas.length; i++){
 
       var imgWrap = $('<article class="img-wrap"></article>').appendTo(wrapIn);

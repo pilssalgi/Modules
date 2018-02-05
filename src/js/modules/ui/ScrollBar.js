@@ -6,7 +6,7 @@ author : Heowongeun
 var DragAndDrop = require('./DragAndDrop');
 var Bind        = require('../util/Bind');
 var windowSize  = require('../util/WindowSize');
-var throttle    = require('throttle-debounce/throttle');
+var throttle    = require('lodash/throttle');
 function ScrollBar($btn,$wrap,option){
   this.btn        = $btn;
   this.wrap       = $wrap;

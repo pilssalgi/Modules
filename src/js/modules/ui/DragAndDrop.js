@@ -37,7 +37,7 @@ var DragAndDrop = function(target,config){
   }
 
   function onStart(e){
-    e.preventDefault();
+    if(UA.isPC)e.preventDefault();
     infos.start     = getPageInfo(e);
     infos.move      = {x:0,y:0};
     infos.end       = {x:0,y:0};
