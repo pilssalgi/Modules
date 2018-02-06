@@ -1,24 +1,28 @@
 (function () {
   $(document).ready(function(){
     var dndGallery = require('./DragAndDropGallery');
-    var dndG1 = new dndGallery($('.dragAndDropLeft'));
-    var dndG2 = new dndGallery($('.dragAndDropRight'),{reverse:true});
+    var arrL1 = $('.dragAndDropLeft .arrL'),
+        arrR1 = $('.dragAndDropLeft .arrR'),
+        arrL2 = $('.dragAndDropRight .arrL'),
+        arrR2 = $('.dragAndDropRight .arrR');
 
+    var dndG1 = new dndGallery($('.dragAndDropLeft'),{arrowLeft:arrL1,arrowRight:arrR1});
+    var dndG2 = new dndGallery($('.dragAndDropRight'),{arrowLeft:arrL2,arrowRight:arrR2,reverse:true});
 
-    $('.dragAndDropLeft .arrL').on('click',function(){
-      dndG1.prev();
+    arrL1.on('click',function(){
+      dndG1.prev({duration:1,ease:Power4.easeInOut});
     });
 
-    $('.dragAndDropLeft .arrR').on('click',function(){
-      dndG1.next();
+    arrR1.on('click',function(){
+      dndG1.next({complete:function(){console.log('moved')}});
     });
 
-    $('.dragAndDropRight .arrL').on('click',function(){
-      dndG2.prev();
-    });
-
-    $('.dragAndDropRight .arrR').on('click',function(){
+    arrL2.on('click',function(){
       dndG2.next();
+    });
+
+    arrR2.on('click',function(){
+      dndG2.prev();
     });
 
   });
