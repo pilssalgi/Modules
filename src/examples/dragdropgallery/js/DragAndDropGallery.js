@@ -1,6 +1,6 @@
 import {TweenMax, Power2, TimelineLite} from "gsap";
+var $ = require('jQuery');
 function DragAndDropGallery($wrap,option){
-	var $ 		 					= require('jQuery');
 	var debounce 				= require('lodash/debounce');
 	var DragAndDrop 		= require('../../../js/modules/ui/DragAndDrop');
 	var UA 							= require('../../../js/modules/info/UA')();
