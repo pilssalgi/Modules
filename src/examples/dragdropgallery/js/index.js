@@ -7,7 +7,7 @@
         arrR2 = $('.dragAndDropRight .arrR');
 
     var dndG1 = new dndGallery($('.dragAndDropLeft'),{friction:0.9,arrowLeft:arrL1,arrowRight:arrR1});
-    var dndG2 = new dndGallery($('.dragAndDropRight'),friction:0.96,arrowLeft:arrL2,arrowRight:arrR2,reverse:true});
+    var dndG2 = new dndGallery($('.dragAndDropRight'),{friction:0.96,arrowLeft:arrL2,arrowRight:arrR2,reverse:true});
 
     arrL1.on('click',function(){
       dndG1.prev({duration:2,ease:Back.easeInOut});
