@@ -84,7 +84,6 @@ function DragAndDropGallery($wrap,option){
 	function onDragStart(e){
 		if(Tweener)Tweener.kill();
 		isDrag = true;
-		isClick = false;
 		drag.old = e.start;
 		if(!isRender)requestAnimationFrame(onRender)
 	};
