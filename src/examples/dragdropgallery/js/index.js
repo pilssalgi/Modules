@@ -25,5 +25,24 @@
       dndG2.prev();
     });
 
+
+    $('.dragAndDropLeft .reset').on('click',function(){
+      dndG1.reset();
+    });
+
+    $('.dragAndDropRight .reset').on('click',function(){
+      dndG2.reset();
+    });
+
+    $('.dragAndDropLeft .remove').on('click',function(){
+      dndG1.remove();
+      dndG1 = undefined;
+    });
+
+    $('.dragAndDropRight .remove').on('click',function(){
+      dndG2.remove();
+      dndG2 = undefined;
+    });
+
   });
 }).call(this);

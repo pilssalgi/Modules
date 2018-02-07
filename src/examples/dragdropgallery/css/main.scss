@@ -43,6 +43,14 @@ main {
   font-size:10px;
   line-height:20px;
 }
+
+.reset,.remove {
+  margin-left: 10px;
+  background-color: #fff;
+  padding: 0 20px;
+  cursor:pointer;
+} 
+
 .arrL,.arrR {
   position:relative;
   width:20px; height:20px;

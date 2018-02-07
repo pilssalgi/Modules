@@ -1,5 +1,9 @@
 var $  = require('jQuery');
-var UA = require('../info/UA')();
+var UAParser  = require('ua-parser-js');
+var UA        = new UAParser();
+var isPC      = UA.getDevice().vendor == undefined?true:false;
+var isMozilla = UA.getBrowser().name == 'Mozilla'?true:false;
+
 var DragAndDrop = function(target,config){
   var touchMoveOffset = 0,
       touchStartPos = {},
@@ -26,7 +30,7 @@ var DragAndDrop = function(target,config){
 
   $.extend(_config,config);
 
-  if(UA.isPC){
+  if(isPC){
     $(target).bind('mousedown',onStart);
     // $(document).bind('mousemove',onMove);
     // $(document).bind('mouseup',onEnd);
@@ -37,14 +41,14 @@ var DragAndDrop = function(target,config){
   }
 
   function onStart(e){
-    if(UA.isPC)e.preventDefault();
+    if(isPC)e.preventDefault();
     infos.start     = getPageInfo(e);
     infos.move      = {x:0,y:0};
     infos.end       = {x:0,y:0};
     infos.distance  = {x:0,y:0};
     _config.onStart(infos)
     isDown = true;
-    if(UA.isPC){
+    if(isPC){
       $(document).on('mousemove',onMove);
       $(document).on('mouseup',onEnd);
       // $(document).on('mouseout',onEnd);
@@ -77,7 +81,7 @@ var DragAndDrop = function(target,config){
     }
     
     isDown = false;
-    if(UA.isPC){
+    if(isPC){
       $(document).off('mousemove',onMove);
       $(document).off('mouseup',onEnd);
       // $(document).off('mouseout',onEnd);
@@ -91,7 +95,7 @@ var DragAndDrop = function(target,config){
     var info = {x:0, y:0}; 
     var supportTouch = 'ontouchstart' in window;
     var targetRect = {left:e.target.offsetLeft,top:e.target.offsetTop};
-    if(UA.isMozilla && UA.isPC)supportTouch = false;
+    if(isMozilla && isPC)supportTouch = false;
     if(supportTouch) {
       var touch;
       if (e.touches != null) {
@@ -107,6 +111,16 @@ var DragAndDrop = function(target,config){
     }
     return info;
   }
+
+  this.remove = function(){
+    if(isPC){
+      $(target).off('mousedown',onStart);
+    }else{
+      $(target).off('touchstart',onStart);
+    }
+  }
+
+  return this;
 }
 
 DragAndDrop.prototype.constructor = DragAndDrop;

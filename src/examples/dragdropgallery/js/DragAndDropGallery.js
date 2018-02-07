@@ -1,5 +1,9 @@
 import {TweenMax, Power2, TimelineLite} from "gsap";
-var $ = require('jQuery');
+var $ 	= require('jQuery');
+var UAParser  = require('ua-parser-js');
+var UA 				= new UAParser();
+var isPC 			= UA.getDevice().vendor == undefined?true:false;
+
 function DragAndDropGallery($wrap,option){
 	var debounce        = require('lodash/debounce');
 	var DragAndDrop     = require('../../../js/modules/ui/DragAndDrop');
@@ -24,6 +28,9 @@ function DragAndDropGallery($wrap,option){
 	var items = [];
 	var Tweener,TweenOption = {duration:0.7,ease:Power2.easeInOut,complete:function(){}};
 	var current = 0;
+	var dnd;
+	var resizeDebounce;
+	var deviation,vf=0;
 
 	$.extend(config,option);
 	
@@ -37,10 +44,11 @@ function DragAndDropGallery($wrap,option){
 		onDragStop   = Bind(onDragStop,this);
 		onRender     = Bind(onRender,this);
 		onResize     = Bind(onResize,this);
-	
-		$(window).on('resize',debounce(onResize,10));
+		
+		resizeDebounce = debounce(onResize,10);
+		$(window).on('resize',resizeDebounce);
 		onResize();
-		new DragAndDrop(wrapInner,{onStart:onDragStart,onMove:onDragMove,onEnd:onDragStop});
+		dnd = new DragAndDrop(wrapInner,{onStart:onDragStart,onMove:onDragMove,onEnd:onDragStop});
 
 		if(config.reverse){
 			position.x = size.end;
@@ -49,14 +57,13 @@ function DragAndDropGallery($wrap,option){
 			current = $item.total;  
 		}
 
-		if($item[0].tagName.toLowerCase() == 'a' && UA.isPC){
+		if($item[0].tagName.toLowerCase() == 'a' && isPC){
 			$item.on('click',function(e){
 				if(!isClick)e.preventDefault();
 			});
 		}
 	}
 
-	var deviation;
 	function onResize(){
 		size.width  = $item.eq(0).innerWidth();
 		size.halfWidth = size.width * 0.5;
@@ -77,13 +84,14 @@ function DragAndDropGallery($wrap,option){
 	function onDragStart(e){
 		if(Tweener)Tweener.kill();
 		isDrag = true;
+		isClick = false;
 		drag.old = e.start;
 		if(!isRender)requestAnimationFrame(onRender)
 	};
 
 	function onDragMove(e){
 		isClick = false;
-		var vf = (drag.old.x-e.move.x) * config.power;
+		vf = (drag.old.x-e.move.x) * config.power;
 		drag.vf += Math.round(vf);
 		drag.old = e.move;
 	};
@@ -91,7 +99,7 @@ function DragAndDropGallery($wrap,option){
 		isDrag = false;
 		setTimeout(function(){
 			isClick = true;
-		},10);
+		},100);
 	};
 
 	function onRender(){
@@ -124,7 +132,7 @@ function DragAndDropGallery($wrap,option){
 
 	function jump(x,option){
 		if(Tweener)Tweener.kill();
-		$.extend(TweenOption,option);
+		$.extend(TweenOption,option); 
 		Tweener = TweenLite.to(position,TweenOption.duration,{x:x,ease:TweenOption.ease,
 			onUpdate:function(){
 				moveSlide(position.x);
@@ -211,11 +219,23 @@ function DragAndDropGallery($wrap,option){
 	}
 
 	this.remove = function(){
-
+		$(window).off('resize',resizeDebounce);
+		dnd.remove();
 	}
 
 	this.reset = function(){
-		
+		drag.vf = 0;
+		isDrag = false;
+		position.ratio = 0;
+
+		if(config.reverse){
+			position.x = size.end;
+			position.ratio = position.x / size.end;
+		}else{
+			position.x = size.start;
+			position.ratio = 0;	
+		}
+		moveSlide(position.x);
 	}
 
 
