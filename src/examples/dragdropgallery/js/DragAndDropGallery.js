@@ -90,6 +90,7 @@ function DragAndDropGallery($wrap,option){
 
 	function onDragMove(e){
 		isClick = false;
+		$wrap.addClass('preventClick');
 		vf = (drag.old.x-e.move.x) * config.power;
 		drag.vf += Math.round(vf);
 		drag.old = e.move;
@@ -98,6 +99,7 @@ function DragAndDropGallery($wrap,option){
 		isDrag = false;
 		setTimeout(function(){
 			isClick = true;
+			$wrap.removeClass('preventClick');
 		},100);
 	};
 
