@@ -218,7 +218,7 @@ function DragAndDropGallery($wrap,option){
 		jump(tgX,option);
 	}
 
-	this.remove = function(){
+	this.kill = function(){
 		$(window).off('resize',resizeDebounce);
 		dnd.remove();
 	}

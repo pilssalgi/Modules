@@ -35,12 +35,12 @@
     });
 
     $('.dragAndDropLeft .remove').on('click',function(){
-      dndG1.remove();
+      dndG1.kill();
       dndG1 = undefined;
     });
 
     $('.dragAndDropRight .remove').on('click',function(){
-      dndG2.remove();
+      dndG2.kill();
       dndG2 = undefined;
     });
 
