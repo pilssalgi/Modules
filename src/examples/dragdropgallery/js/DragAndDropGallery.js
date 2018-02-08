@@ -15,7 +15,7 @@ function DragAndDropGallery($wrap,option){
 	var isDrag      = false;
 	var isClick     = true;
 	var isRender    = false;
-	var drag        = {vf:0,old:{x:0,y:0}};
+	var drag        = {vf:0,power:0,old:{x:0,y:0}};
 	var position    = {x:0,z:0,oldX:0,ratio:0};
 	var size        = {left:0,width:0,halfWidth:0,start:0,end:0,all:0};
 	var config      = {
@@ -122,39 +122,46 @@ function DragAndDropGallery($wrap,option){
 		}
 
 		direction = drag.vf<0?-1:1;
+		
 
 		position.x += drag.vf;
 		position.ratio = position.x / size.end;
 		if(position.x <= size.start)position.x += (size.start - position.x)*config.power;
 		if(position.x >= size.end)position.x += (size.end-position.x)*config.power;
-		// moveSlide(position.x);
+		moveSlide(position.x);
 
+		// for(var i =0; i<items.length; i++){
+		// 	item = items[i];
+		// 	item_offset = item.offset;
+		// 	if(direction>0){
+		// 			items[i].offset += (drag.vf*i-items[i].offset)*0.2;
+		// 	}else{
+		// 		var reverseID = items.length-i-1;
+		// 		items[i].offset += (drag.vf*reverseID-items[i].offset)*0.2;
+		// 	}
+
+		// 	translate3d(items[i].dom[0],-position.x+item_offset+'px',0,0);
+		// }
+	}
+
+
+	function moveSlide(x){
+		// translate3d(wrapInner,-x+'px',0,0);
+		// 
 		for(var i =0; i<items.length; i++){
 			item = items[i];
 			item_offset = item.offset;
-			if(direction){
-				if(i==0){
-					item_offset *= 0.5;
-				}else{
+			if(direction>0){
 					items[i].offset += (drag.vf*i-items[i].offset)*0.2;
-					if(i==1)console.log("1", items[i].offset);
-				}
 			}else{
-				if(i==0){
-					item_offset *= 0.5;
-				}else{
-					items[i].offset = items[items.length-i].offset*direction;
-					if(i==1)console.log("-1", items[i].offset);
-					// items[i].offset += (drag.vf*(items.length-i)-items[i].offset)*0.2;
-				}
+				var reverseID = items.length-i-1;
+				items[i].offset += (drag.vf*reverseID-items[i].offset)*0.2;
 			}
-			translate3d(items[i].dom[0],-position.ratio*size.end+item_offset+'px',0,0);
 
+			// if(position.ratio < 0 || position.ratio > 1)item_offset *= 0.3;
+
+			translate3d(items[i].dom[0],-x+item_offset+'px',0,0);
 		}
-	}
-
-	function moveSlide(x){
-		translate3d(wrapInner,-x+'px',0,0);
 		checkCursor(x);
 	}
 

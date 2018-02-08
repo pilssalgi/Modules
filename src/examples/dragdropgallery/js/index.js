@@ -10,7 +10,7 @@
     var dndG2 = new dndGallery($('.dragAndDropRight'),{friction:0.96,arrowLeft:arrL2,arrowRight:arrR2,reverse:true});
 
     arrL1.on('click',function(){
-      dndG1.prev({duration:2,ease:Back.easeInOut});
+      dndG1.prev({});
     });
 
     arrR1.on('click',function(){
