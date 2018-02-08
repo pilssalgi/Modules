@@ -35,6 +35,10 @@ function DragAndDropGallery($wrap,option){
 	$.extend(config,option);
 	
 	function setup(){
+		$item.each(function(i){
+			items[i] = {dom:$(this),isStage:false,offset:0};
+		});
+
 		addEvent.call(this);
 	}
 
@@ -54,7 +58,7 @@ function DragAndDropGallery($wrap,option){
 			position.x = size.end;
 			position.ratio = position.x / size.end;
 			moveSlide(position.x);
-			current = $item.total;  
+			current = $item.total;
 		}
 
 		if($item[0].tagName.toLowerCase() == 'a' && isPC){
@@ -103,6 +107,8 @@ function DragAndDropGallery($wrap,option){
 		},100);
 	};
 
+	var direction = 1;
+	var item,item_offset,item_dom;
 	function onRender(){
 		isRender = true;
 		drag.vf *= config.friction;
@@ -115,11 +121,36 @@ function DragAndDropGallery($wrap,option){
 			requestAnimationFrame(onRender);  
 		}
 
+		direction = drag.vf<0?-1:1;
+
 		position.x += drag.vf;
 		position.ratio = position.x / size.end;
 		if(position.x <= size.start)position.x += (size.start - position.x)*config.power;
 		if(position.x >= size.end)position.x += (size.end-position.x)*config.power;
-		moveSlide(position.x);
+		// moveSlide(position.x);
+
+		for(var i =0; i<items.length; i++){
+			item = items[i];
+			item_offset = item.offset;
+			if(direction){
+				if(i==0){
+					item_offset *= 0.5;
+				}else{
+					items[i].offset += (drag.vf*i-items[i].offset)*0.2;
+					if(i==1)console.log("1", items[i].offset);
+				}
+			}else{
+				if(i==0){
+					item_offset *= 0.5;
+				}else{
+					items[i].offset = items[items.length-i].offset*direction;
+					if(i==1)console.log("-1", items[i].offset);
+					// items[i].offset += (drag.vf*(items.length-i)-items[i].offset)*0.2;
+				}
+			}
+			translate3d(items[i].dom[0],-position.ratio*size.end+item_offset+'px',0,0);
+
+		}
 	}
 
 	function moveSlide(x){
