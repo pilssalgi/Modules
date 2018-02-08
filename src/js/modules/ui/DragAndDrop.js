@@ -22,22 +22,20 @@ var DragAndDrop = function(target,config){
 
   var _config = {
     moveWhileDown : true,
-    targetOut:false,
-    onStart : function(e){},
-    onMove : function(e){},
-    onEnd : function(e){},
+    targetOut     : false,
+    onStart : function(){},
+    onMove  : function(){},
+    onEnd   : function(){},
   };
 
   $.extend(_config,config);
 
   if(isPC){
     $(target).bind('mousedown',onStart);
-    // $(document).bind('mousemove',onMove);
-    // $(document).bind('mouseup',onEnd);
   }else{
     $(target).bind('touchstart',onStart);
-    // $(document).bind('touchmove',onMove);
-    // $(document).bind('touchend',onEnd);
+    $(target).on('touchmove',onMove);
+    $(target).on('touchend',onEnd);
   }
 
   function onStart(e){
@@ -54,16 +52,19 @@ var DragAndDrop = function(target,config){
       // $(document).on('mouseout',onEnd);
       if(_config.targetOut)$(target).on('mouseout',onEnd);
     }else{
-      $(document).on('touchmove',onMove);
-      $(document).on('touchend',onEnd);
+      // $(target).on('touchmove',onMove);
+      // $(target).on('touchend',onEnd);
     }
   }
 
   function onMove(e){
+    // e.preventDefault();
     infos.move = getPageInfo(e);
     infos.distance.x = infos.start.x - infos.move.x;
     infos.distance.y = infos.start.y - infos.move.y;
-    if(Math.abs(infos.distance.x)>Math.abs(infos.distance.y))e.preventDefault();
+    if(Math.abs(infos.distance.x)>Math.abs(infos.distance.y)){
+      e.preventDefault();
+    }
 
     if(_config.moveWhileDown){
       if(isDown)_config.onMove(infos);
@@ -87,8 +88,8 @@ var DragAndDrop = function(target,config){
       // $(document).off('mouseout',onEnd);
       if(_config.targetOut)$(target).off('mouseout',onEnd);
     }else{
-      $(document).off('touchmove',onMove);
-      $(document).off('touchend',onEnd);
+      // $(target).off('touchmove',onMove);
+      // $(target).off('touchend',onEnd);
     }
   }
   function getPageInfo(e){
@@ -117,6 +118,8 @@ var DragAndDrop = function(target,config){
       $(target).off('mousedown',onStart);
     }else{
       $(target).off('touchstart',onStart);
+      $(target).off('touchmove',onMove);
+      $(target).off('touchend',onEnd);
     }
   }
 
