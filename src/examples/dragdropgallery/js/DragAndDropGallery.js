@@ -40,7 +40,6 @@ function DragAndDropGallery($wrap,option){
 		$item.each(function(i){
 			items[i] = {dom:$(this),isStage:false,offset:0};
 		});
-
 		addEvent.call(this);
 	}
 
@@ -74,7 +73,11 @@ function DragAndDropGallery($wrap,option){
 		size.width  = $item.eq(0).innerWidth();
 		size.halfWidth = size.width * 0.5;
 		size.margin = 0;
-		size.all = (($item.innerWidth()+size.margin)*$item.length)
+		size.all = 0;//(($item.innerWidth()+size.margin)*$item.length);
+		for(var i=0; i<items.length; i++){
+			size.all+= items[i].dom.innerWidth();
+		}
+		
 		deviation = size.all - $wrap.width();
 		if(!config.reverse){
 			size.start = 0;
