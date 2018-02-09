@@ -86,7 +86,8 @@ function DragAndDropGallery($wrap,option){
 			size.start = deviation<0?deviation:size.margin;
 			size.end = deviation;
 		}
-		position.x = position.ratio * deviation
+
+		position.x = position.ratio * deviation;
 		moveSlide(position.x);
 	}
 
@@ -129,9 +130,9 @@ function DragAndDropGallery($wrap,option){
 		direction = drag.vf<0?-1:1;
 		
 		drag.power += (drag.vf-drag.power)*0.2;
-
 		position.x += drag.vf;
-		position.ratio = position.x / size.end;
+		if(size.end !=0 )position.ratio = position.x / size.end;
+		
 		if(position.x <= size.start)position.x += (size.start - position.x)*config.power;
 		if(position.x >= size.end)position.x += (size.end-position.x)*config.power;
 		moveSlide(position.x);
