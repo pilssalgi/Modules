@@ -1,7 +1,8 @@
 (function () {
-  var SelfPosition = require('../../../js/modules/parallax/SelfPosition');
-  var throttle    = require('lodash/throttle');
-  var debounce    = require('lodash/debounce');
+  var throttle      = require('lodash/throttle');
+  var debounce      = require('lodash/debounce');
+  var SmoothScroll  = require('../../../js/modules/ui/FakeScroll');
+  var Parallax      = require('./Parallax');
   function getRandomImage(tags,callBack){
     $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?",
     { tags: tags,tagmode: "any",format: "json" },
@@ -17,32 +18,36 @@
     });
   }
 
-  var wrap = $('.wrap'),
+  var wrap = $('.wrapIn'),
+      wrapLeft = $('.wrapLeft'),
+      wrapRight = $('.wrapRight'),
       imgs = [];
   var top = 0, scrollTop = 0;
-  getRandomImage('mountain',function(datas){
-    for(var i=0; i<10; i++){
-
-      var imgWrap = $('<article class="img-wrap"></article>').appendTo(wrap);
-      imgWrap.css({maxWidth:Math.floor(Math.random()*400+300)});
+  var loadCount = 0;
+  var ss,palax;
+  getRandomImage('vangogh',function(datas){
+    for(var i=0; i<datas.length; i++){
+      var imgWrap = $('<article class="img-wrap"></article>').appendTo((i<datas.length*0.5?wrapLeft:wrapRight));
       var img = document.createElement("img");
+      imgWrap.append(img);
       img.src = datas[i].url;
       img.onload = function(){
         $(this).attr({width:this.width,height:this.height});
+        loadCount++;
+        if(loadCount == datas.length)setup();
       }
-
-      imgWrap.append(img);
-      // var title = $('<h3>'+datas[i].title+'</h3>').appendTo(imgWrap);
-      imgs.push({wrap:imgWrap,offset:0,img:img,y:0,titleY:0,rect:null,self:new SelfPosition(img)._setup()});
-
     }
-    setup();
+    
   });
 
   function setup(){
     $(window).on('scroll',throttle(onScroll,100));
     $(window).on('resize',onResize);
     onResize();
+    ss = new SmoothScroll(wrap[0]);
+    ss.speed = 0.08;
+    palax = new Parallax($('.img-wrap'));
+
     update();
   }
 
@@ -56,41 +61,11 @@
   }
 
   function onResize(){
-    for(var i=0; i<imgs.length; i++){
-      imgs[i].rect = imgs[i].img.getBoundingClientRect();
-      imgs[i].offset = imgs[i].wrap.offset();
-    } 
   }
 
   function update(){
-    top += (scrollTop-top) * 0.1;
-    for(var i=0; i<imgs.length; i++){
-      var info = imgs[i];
-
-      var y = (scrollTop+info.rect.height)/(info.rect.y+info.rect.height+window.innerHeight);
-      if(i==2){
-        // imgs[i].rect = imgs[i].img.getBoundingClientRect();
-        console.log(i,"rect", y,info.rect,info.offset);
-      }
-
-
-      // var self = imgs[i].self;
-      // self._update();
-      // var y = -5+self.progress*10;
-      // imgs[i].y += (y-imgs[i].y)*0.1;
-      // var titleY = 100-self.progress*200;
-      // imgs[i].titleY += (titleY-imgs[i].titleY)*0.1;
-      // if(self.progress < 2 && self.progress > -1){
-      //   imgs[i].img.style.transform = translate3d('0px',Number(imgs[i].y.toFixed(3))+'%',200);
-      //   imgs[i].title.style.transform = translate3d('0px',Number(imgs[i].titleY.toFixed(3))+'px',0);
-      // }
-    }
-
-    if(Math.abs(top-scrollTop)<0.01){
-      ticking = false;
-    }else{
-      requestAnimationFrame(update);
-    }
+    requestAnimationFrame(update);
+    palax.update(ss.position.y);
   }
 
   function translate3d(x,y,z){

@@ -24,10 +24,7 @@
   </head>
   <body>
     <main class="wrap">
-      <section class="wrapIn">
-        <div class="wrapLeft"></div>
-        <div class="wrapRight"></div>
-      </section>
+      <section class="wrapIn"></section>
     </main>
   </body>
   <script src="js/index.js"></script>

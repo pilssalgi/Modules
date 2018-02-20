@@ -2,49 +2,58 @@ var windowSize  = require('../util/WindowSize');
 var Bind        = require('../util/Bind');
 var debounce    = require('lodash/debounce');
 
-var SelfPosition = function(target){
-  this.target       = target;
-  this.progress     = 0;
-  this.progressOld  = 0;
-  this.isStageIn    = false;
-  this.stageSize    = { width:0, height:0 };
-  this.offset       = {left:0,top:0,width:0,height:0};
-  this.stageInOffset = {min:0,max:1};
+var SelfPosition = function(element){
+	this.element       = element;
+	this.progress      = 0;
+	this.progressOld   = 0;
+	this.isStageIn     = false;
+	this.offset        = null;
+	this.rect          = null;
+	this.stageInOffset = {min:0,max:1};
+
+	this.setup();
+	return this;
 }
 
 
-SelfPosition.prototype._setup = function(){
-  // this._resize = Bind(this._resize,this);
-  // $(window).on('resize',this._resize);
-  // $(window).on('resize', debounce(this._resize, 0));
-  // this._resize();
-  return this;
+SelfPosition.prototype.setup = function(){
+	this.resize = Bind(this.resize,this);
+	$(window).on('resize', debounce(this.resize, 10));
+	this.resize();
+	return this;
 }
-SelfPosition.prototype._resize = function(){
-  // this.stageSize = windowSize();
-  // this.rect = $(this.target).offset();//.getBoundingClientRect();
-  // this.rect.height = $(this.target).height();
-  // this._update();
+SelfPosition.prototype.resize = function(){
+	this.rect   = this.element.getBoundingClientRect();
+	this.offset = this.getOffset(this.element);
+	this.update();
+}
+SelfPosition.prototype.getOffset = function(element){
+	var rect = element.getBoundingClientRect();
+	return { 
+		top  : rect.top + window.pageYOffset - document.documentElement.clientTop,
+		left : rect.left + window.pageXOffset - document.documentElement.clientLeft
+	}
 }
 
-SelfPosition.prototype._update = function(scrollY){
+var scrollTop = 0,dir = 0;
+SelfPosition.prototype.update = function(scrollY){
+	scrollTop       = scrollY || window.pageYOffset || document.documentElement.scrollTop;
+	this.progress   = -(this.offset.top-scrollTop-window.innerHeight)/(this.rect.height+window.innerHeight);
+	dir             = this.progress-this.progressOld;
 
-  var rect = this.target.getBoundingClientRect();
-  this.progress   = 1-(rect.top+rect.height)/(window.innerHeight+rect.height);
-  var dir = this.progress-this.progressOld;
-  if(this.progress >= 0 && this.progress <= 1){
-    if(!this.isStageIn && this.progress > this.stageInOffset.min){
-      this.in(dir);
-      this.isStageIn = true;
-    }
-  }else{
-    if(this.isStageIn){
-      this.out(dir);
-    }
-    this.isStageIn = false;
-  }
+	if(this.progress >= 0 && this.progress <= 1){
+		if(!this.isStageIn && this.progress > this.stageInOffset.min){
+			this.in(dir);
+			this.isStageIn = true;
+		}
+	}else{
+		if(this.isStageIn && this.progress < this.stageInOffset.max){
+			this.out(dir);
+		}
+		this.isStageIn = false;
+	}
 
-  this.progressOld = this.progress;
+	this.progressOld = this.progress;
 }
 
 SelfPosition.prototype.in = function(dir){

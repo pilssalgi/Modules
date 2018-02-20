@@ -4,40 +4,23 @@ html,body {
   height: 100%;
 }
 
-.wrap {
-  position: relative;
+.wrapIn {
   width:100%;
-  height:100%;
-  text-align: center;
+  display:flex;
+  flex-wrap:wrap;
+
+  .wrapLeft,.wrapRight {
+    width:50%;
+  }
+
 }
 
 .img-wrap {
-  position: relative;
-  // width:500px; 
-  // max-width: 1200px;
-  // height:100%; 
-  margin:0 auto;
-  display: block;
+  width:50vw;
+  padding:5vw;
   box-sizing:border-box;
-  overflow:hidden;
-  perspective: 1000px;
-
-  h3 {
-    position:absolute;
-    color:#fff;
-    text-transform: uppercase;
-    font-weight:normal;
-    letter-spacing: 0.1em;
-    font-size:40px;
-    top:50%;
-    text-align: center;
-    width:100%;
-  }
   img{
-    position:relative;
-    // height:100%; width:auto;
     width:100%; height:auto;
-    max-width: 100%;
     display: inline-block;
   }
 }
