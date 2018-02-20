@@ -82,9 +82,19 @@ function DragAndDropGallery($wrap,option){
 		if(!config.reverse){
 			size.start = 0;
 			size.end = deviation<0?0:(deviation-size.margin);
+			if(position.x<size.start){
+				position.x = size.start;
+				position.ratio = 0
+			}
 		}else{
 			size.start = deviation<0?deviation:size.margin;
 			size.end = deviation;
+			position.x = position.ratio * deviation;
+
+			if(position.x<size.start){
+				position.x = size.start;
+				position.ratio = 1;
+			}
 		}
 
 		position.x = position.ratio * deviation;
