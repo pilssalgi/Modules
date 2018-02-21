@@ -1,4 +1,5 @@
 @import '../../../css/base/normalize';
+@import '../../../css/base/font';
 html,body {
   width:100%;
   height: 100%;
@@ -6,22 +7,71 @@ html,body {
 
 .wrapIn {
   width:100%;
-  display:flex;
-  flex-wrap:wrap;
 
-  .wrapLeft,.wrapRight {
-    width:50%;
+  .cover {
+    width:100%;
+    padding: 25vh 0;
+    text-align: center;
+    p {
+      width:100%;
+      margin:0 auto;
+      text-transform: uppercase;
+      font-size:5vw;
+      letter-spacing:0.5em;
+      color:#555;
+      margin-bottom: 2vw;
+    }
+
+    a {
+      margin:0 10px;
+      padding:10px 20px;
+      border:solid 1px #555;
+    }
+  }
+  
+  .gallery {
+    display:flex;
+    flex-wrap:wrap;
+    width:90%;
+    margin:0 auto;
+    .galleryLeft,.galleryRight {
+      width:50%;
+      box-sizing:border-box;
+    }
+    .galleryLeft {
+      padding-right: 3vw;
+    }
+
+    .galleryRight {
+      padding-left: 3vw;
+    }
   }
 
+
+}
+.img-wrap {
+  width:100%;
+  box-sizing:border-box;
+  margin:5vw 0;
+  .img-wrapIn {
+    overflow:hidden;
+    img{
+      width:100%; height:auto;
+      display: inline-block;
+    }
+  }
 }
 
-.img-wrap {
-  width:50vw;
-  padding:5vw;
-  box-sizing:border-box;
-  img{
-    width:100%; height:auto;
-    display: inline-block;
+
+.code-block {
+  width:100%;
+  background-color: #555;
+  padding:1vw;
+  code {
+    color:#ddd;
+    margin:0 auto;
+    display: table;
+    line-height:1.8em;
   }
 }
 

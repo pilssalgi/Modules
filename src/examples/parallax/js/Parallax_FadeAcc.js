@@ -1,6 +1,6 @@
 var SelfPosition = require('../../../js/modules/parallax/SelfPosition');
 var Easing = require('../../../js/modules/parallax/Easing');
-function Parallax($selector){
+function Main($selector){
 	var list = [];
 	function setup(){
 		$selector.each(function(i){
@@ -29,16 +29,12 @@ function Parallax($selector){
 		for(var i=0; i<list.length; i++){
 			var l = list[i];
 			list[i].selfPosition.update(scroll);
-			var p 			= list[i].selfPosition.progress.crt; // 0~1
-			var p2 			= list[i].selfPosition.progress.showUpTop; // 0~1 screen top
-			if(p2>1)p2=1;
-			if(p2<0)p2=0;
-			p2  = Easing.easeOutQuart(0,p2,0,1,1);
-			l.acc.y += (l.showUpAcc * (1-p2) - l.acc.y)*0.2;
-			l.pos.y += ((-p*l.offsetY)-l.pos.y)*l.speed;
-			// translate3d(l.dom,0,l.acc.y+'px',0);
-			// translate3d(l.child,0,l.y+'px',0);
-			rotate(l.img,scrollAcc2*0.1,scrollAcc);
+			var p = list[i].selfPosition.progress.showUpHalf; // 0~1
+			if(p>1)p=1;
+			if(p<0)p=0;
+			p  = Easing.easeOutQuart(0,p,0,1,1);
+			l.acc.y += (l.showUpAcc * (1-p) - l.acc.y)*0.2;
+			translate3d(l.dom,0,l.acc.y+'px',0);
 		}
 	}
 
@@ -57,5 +53,5 @@ function Parallax($selector){
 	return this;
 }
 
-Parallax.prototype.constructor = Parallax;
-module.exports = Parallax;
+Main.prototype.constructor = Main;
+module.exports = Main;

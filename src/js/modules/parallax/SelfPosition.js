@@ -3,13 +3,12 @@ var Bind        = require('../util/Bind');
 var debounce    = require('lodash/debounce');
 
 var SelfPosition = function(element){
-	this.element       = element;
-	this.progress      = 0;
-	this.progressOld   = 0;
-	this.isStageIn     = false;
-	this.offset        = null;
-	this.rect          = null;
-	this.stageInOffset = {min:0,max:1};
+	this.element       	= element;
+	this.progress      	= {crt:0,old:0,showUp:0,showUpTop:0,showUpHalf:0};
+	this.isStageIn     	= false;
+	this.offset        	= null;
+	this.rect          	= null;
+	this.stageInOffset 	= {min:0,max:1};
 
 	this.setup();
 	return this;
@@ -18,7 +17,8 @@ var SelfPosition = function(element){
 
 SelfPosition.prototype.setup = function(){
 	this.resize = Bind(this.resize,this);
-	$(window).on('resize', debounce(this.resize, 10));
+	// $(window).on('resize', debounce(this.resize, 10));
+	$(window).on('resize', this.resize);//debounce(this.resize, 10));
 	this.resize();
 	return this;
 }
@@ -35,25 +35,29 @@ SelfPosition.prototype.getOffset = function(element){
 	}
 }
 
-var scrollTop = 0,dir = 0;
+var scrollTop = 0,contentTop=0,dir = 0;
 SelfPosition.prototype.update = function(scrollY){
-	scrollTop       = scrollY || window.pageYOffset || document.documentElement.scrollTop;
-	this.progress   = -(this.offset.top-scrollTop-window.innerHeight)/(this.rect.height+window.innerHeight);
-	dir             = this.progress-this.progressOld;
+	scrollTop       				 = scrollY || window.pageYOffset || document.documentElement.scrollTop;
+	contentTop 							 = -(this.offset.top-scrollTop-window.innerHeight);
+	this.progress.crt 			 = contentTop/(this.rect.height+window.innerHeight);
+	this.progress.showUpSelf = contentTop/(this.rect.height);
+	this.progress.showUpTop  = contentTop/(window.innerHeight);
+	this.progress.showUpHalf = contentTop/(window.innerHeight*0.5);
+	dir             				 = this.progress.crt-this.progress.old;
 
-	if(this.progress >= 0 && this.progress <= 1){
+	if(this.progress.crt >= 0 && this.progress.crt <= 1){
 		if(!this.isStageIn && this.progress > this.stageInOffset.min){
 			this.in(dir);
 			this.isStageIn = true;
 		}
 	}else{
-		if(this.isStageIn && this.progress < this.stageInOffset.max){
+		if(this.isStageIn && this.progress.crt < this.stageInOffset.max){
 			this.out(dir);
 		}
 		this.isStageIn = false;
 	}
 
-	this.progressOld = this.progress;
+	this.progress.old = this.progress.crt;
 }
 
 SelfPosition.prototype.in = function(dir){

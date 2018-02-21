@@ -12,7 +12,7 @@ var FakeScroll = function(target,speed,option){
   var $fakeDom  = $('<figure></figure>');
   var screenSize = windowSize();
   var _this = this;
-  var config = {isTop:true};
+  var config = {isTop:true,onUpdate:function(){}};
   var scroll = {y:0,power:0};
   var ticking = false;
   if(option)$.extend(config,option);
@@ -58,7 +58,7 @@ var FakeScroll = function(target,speed,option){
     }else{
       requestAnimationFrame(update);
     }
-
+    config.onUpdate();
     this.positionUpdate();
     this.position.oldY = this.position.y;
   }

@@ -2,7 +2,6 @@
   var throttle      = require('lodash/throttle');
   var debounce      = require('lodash/debounce');
   var SmoothScroll  = require('../../../js/modules/ui/FakeScroll');
-  var Parallax      = require('./Parallax');
   function getRandomImage(tags,callBack){
     $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?",
     { tags: tags,tagmode: "any",format: "json" },
@@ -19,17 +18,17 @@
   }
 
   var wrap = $('.wrapIn'),
-      wrapLeft = $('.wrapLeft'),
-      wrapRight = $('.wrapRight'),
+      wrapLeft = $('.galleryLeft'),
+      wrapRight = $('.galleryRight'),
       imgs = [];
   var top = 0, scrollTop = 0;
   var loadCount = 0;
-  var ss,palax;
   getRandomImage('vangogh',function(datas){
     for(var i=0; i<datas.length; i++){
-      var imgWrap = $('<article class="img-wrap"></article>').appendTo((i<datas.length*0.5?wrapLeft:wrapRight));
+      var imgWrap   = $('<article class="img-wrap"></article>').appendTo((i<datas.length*0.5?wrapLeft:wrapRight));
+      var imgWrapIn = $('<article class="img-wrapIn"></article>').appendTo(imgWrap);
       var img = document.createElement("img");
-      imgWrap.append(img);
+      imgWrapIn.append(img);
       img.src = datas[i].url;
       img.onload = function(){
         $(this).attr({width:this.width,height:this.height});
@@ -40,19 +39,30 @@
     
   });
 
-  function setup(){
-    $(window).on('scroll',throttle(onScroll,100));
-    $(window).on('resize',onResize);
-    onResize();
-    ss = new SmoothScroll(wrap[0]);
-    ss.speed = 0.08;
-    palax = new Parallax($('.img-wrap'));
+  var ParallaxModules = {
+    rotateZoom:require('./Parallax_Zoom'),
+    fadeAcc:require('./Parallax_FadeAcc')
+  }
 
+  var params = {
+    rotateZoom : {degree:10,zoom:200,speed:0.02},
+    fadeAcc : {}
+  }
+
+  var ss,palax;
+  function setup(){
+    $(window).on('scroll',throttle(onScroll,1000));
+    ss = new SmoothScroll(wrap[0],0.1);
+
+    var pageName = window.location.pathname.split('/');
+    pageName = pageName[pageName.length-1].split('.')[0];
+    var paraxModule = ParallaxModules[pageName];
+    palax = new paraxModule($('.img-wrap'),params[pageName]);
     update();
   }
 
   var ticking = false;
-  function onScroll(){
+  function onScroll(e){
     scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     if(!ticking){
       requestAnimationFrame(update);
@@ -60,16 +70,9 @@
     ticking = true;
   }
 
-  function onResize(){
-  }
-
   function update(){
     requestAnimationFrame(update);
     palax.update(ss.position.y);
-  }
-
-  function translate3d(x,y,z){
-    return 'translate3d('+x+','+y+','+z+'px)';
   }
 
 }).call(this);
