@@ -1,3 +1,10 @@
+/**
+* 2018.01
+* ver 0.1.1
+* Author : Heonwongeun
+* FaceBook : https://www.facebook.com/heo.wongeun
+*/
+
 var windowSize  = require('../util/WindowSize');
 var Bind        = require('../util/Bind');
 var debounce    = require('lodash/debounce');

@@ -1,3 +1,10 @@
+/**
+* 2018.01
+* ver 0.1.1
+* Author : Heonwongeun
+* FaceBook : https://www.facebook.com/heo.wongeun
+*/
+
 import {TweenMax, Power2, TimelineLite} from "gsap";
 var $ 	= require('jQuery');
 var UAParser  = require('ua-parser-js');
