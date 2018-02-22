@@ -1,34 +1,71 @@
 (function () {
-	var throttle      = require('lodash/throttle');
-	var debounce      = require('lodash/debounce');
-	var SmoothScroll  = require('../../../js/modules/ui/FakeScroll');
-	var UAParser      = require('ua-parser-js');
-	var UA            = new UAParser();
-	var isPC          = UA.getDevice().vendor == undefined?true:false;
-	function getRandomImage(tags,callBack){
-		$.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?",
-		{ tags: tags,tagmode: "any",format: "json" },
-		function(data) {
-				var rnd = Math.floor(Math.random() * data.items.length);
-				var imgs = [];
-				for(var i=0; i<data.items.length; i++){
-					var url = data.items[i].media.m.replace('_m','_b');
-					imgs.push({url:url,title:data.items[i].title});
-				}
+	var throttle			= require('lodash/throttle');
+	var debounce			= require('lodash/debounce');
+	var SmoothScroll	= require('../../../js/modules/ui/FakeScroll');
+	var FlickrLoader	= require('../../../js/modules/api/FlickrLoader');
+	var UAParser			= require('ua-parser-js');
+	var UA						= new UAParser();
+	var isPC					= UA.getDevice().vendor == undefined?true:false;
 
-				callBack(imgs);
-		});
+	var wrap 			= $('.wrapIn'),
+			wrapLeft	= $('.galleryLeft'),
+			wrapRight	= $('.galleryRight');
+	var pathName = window.location.pathname.split('/');
+	var pageName = pathName[pathName.length-1].split('.')[0];	
+	var tags 		= ['vangogh','leonardo','michelangelobuonarroti','rembrandt','andywarhol','paulgauguin'];
+	var crtTag 	= -1;
+
+	var SScroll=null,palax;
+	var ParallaxModules = {
+		rotateZoom:require('./Parallax_Zoom'),
+		fadeAcc:require('./Parallax_FadeAcc')
+	}
+	var ParallaParams = {
+		rotateZoom 	: {degree:10,zoom:300,speed:0.02,fadeAcc:true,fadeAccOffset:300},
+		fadeAcc 		: {showUpAcc:300}
 	}
 
-	var wrap = $('.wrapIn'),
-			wrapLeft = $('.galleryLeft'),
-			wrapRight = $('.galleryRight'),
-			imgs = [];
-	var top = 0, scrollTop = 0;
+	$(document).ready(function(){
+		$('.'+pageName).addClass("active");
+		setup();
+	});
+	
+	function setup(){
+		$(window).on('scroll',throttle(onScroll,300));
+		if(isPC)SScroll = new SmoothScroll(wrap[0],0.1);
+		update();
+
+		crtTag = 0;
+		FlickrLoader(tags[crtTag],makeImageDom);
+		tagSet();
+	}
+
+	function tagSet(){
+		for(var i=0; i<tags.length; i++){
+			var a = $('<a>#'+tags[i]+'</a>');
+			$('.tags').append(a);
+
+			(function(dom,id){
+				dom.on('click',function(){
+					if(isLoading || crtTag==id)return;
+					crtTag = id;
+					isLoading = true;
+					FlickrLoader(tags[id],makeImageDom);
+				})
+			})(a,i);
+		}
+	}
+
 	var loadCount = 0;
-	getRandomImage('vangogh',function(datas){
+	var imgs = [];
+	var isLoading = true;
+	function makeImageDom(datas){
+		wrapLeft.empty();
+		wrapRight.empty();
+		loadCount = 0;
+		var count = 1;
 		for(var i=0; i<datas.length; i++){
-			var imgWrap   = $('<article class="img-wrap"></article>').appendTo((i<datas.length*0.5?wrapLeft:wrapRight));
+			var imgWrap   = $('<article class="img-wrap"></article>').appendTo((count%2==0?wrapLeft:wrapRight));
 			var imgWrapIn = $('<article class="img-wrapIn"></article>').appendTo(imgWrap);
 			var img = document.createElement("img");
 			imgWrapIn.append(img);
@@ -37,37 +74,19 @@
 				$(this).attr({width:this.width,height:this.height});
 				loadCount++;
 				if(loadCount == datas.length){
-					setup();
+					isLoading = false;
+					SScroll.sizeUpdate();
+
+					if(!palax)palax = new ParallaxModules[pageName]($('.img-wrap'),ParallaParams[pageName]);
+					else palax.setList($('.img-wrap'));
 				}
 			}
+			count++;
 		}
-		
-	});
-
-	var ParallaxModules = {
-		rotateZoom:require('./Parallax_Zoom'),
-		fadeAcc:require('./Parallax_FadeAcc')
-	}
-
-	var params = {
-		rotateZoom : {degree:10,zoom:200,speed:0.02,fadeAcc:true,fadeAccOffset:300},
-		fadeAcc : {showUpAcc:300}
-	}
-
-	var ss=null,palax;
-	var pageName = window.location.pathname.split('/');
-	pageName = pageName[pageName.length-1].split('.')[0];
-	function setup(){
-		$(window).on('scroll',throttle(onScroll,300));
-		if(isPC)ss = new SmoothScroll(wrap[0],0.1);
-
-		palax = new ParallaxModules[pageName]($('.img-wrap'),params[pageName]);
-		update();
 	}
 
 	var ticking = false;
 	function onScroll(e){
-		scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 		if(!ticking){
 			requestAnimationFrame(update);
 		}
@@ -76,7 +95,7 @@
 
 	function update(){
 		requestAnimationFrame(update);
-		palax.update(ss?ss.position.y:undefined);
+		if(palax)palax.update(SScroll?SScroll.position.y:undefined);
 	}
 
 }).call(this);

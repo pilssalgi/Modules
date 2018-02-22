@@ -8,8 +8,20 @@ function Main($selector,option){
 	var resizeDebounce;
 	function setup(){
 		total = $selector.length;
+		this.setList($selector);
+		resizeDebounce = debounce(onResize,10);
+		$(window).on('resize',resizeDebounce);
+	}
+
+	function onResize(){
+		for(var i=0; i<total; i++){
+			list[i].selfPosition.update();
+		}
+	}
+
+
+	this.setList = function($selector){
 		$selector.each(function(i){
-			// $(this).css({backgroundColor:'rgba('+Math.floor(Math.random()*100)+',0,0,0.4)'})
 			list[i] = {
 				dom:$(this)[0],
 				child:$(this).children()[0],
@@ -20,16 +32,9 @@ function Main($selector,option){
 				speed:Math.random()*0.3
 			};
 		});
+		onResize();
+	};
 
-		resizeDebounce = debounce(onResize,10);
-		$(window).on('resize',resizeDebounce);
-	}
-
-	function onResize(){
-		for(var i=0; i<total; i++){
-			list[i].selfPosition.update();
-		}
-	}
 
 	var config = {
 		showUpAcc:300,

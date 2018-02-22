@@ -20,9 +20,7 @@ function Main($selector,option){
 
 	function setup(){
 		total = $selector.length;
-
-		this.addList($selector);
-
+		this.setList($selector);
 		resizeDebounce = debounce(onResize,10);
 		$(window).on('resize',resizeDebounce);
 	}
@@ -33,9 +31,7 @@ function Main($selector,option){
 		}
 	}
 
-
-
-	this.addList = function($selector){
+	this.setList = function($selector){
 		$selector.each(function(i){
 			list[i] = {
 				dom:$(this)[0],
@@ -45,6 +41,7 @@ function Main($selector,option){
 				acc:{x:0,y:0,z:0}
 			};
 		});
+		onResize();
 	};
 
 	var _scroll = 0;
