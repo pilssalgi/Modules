@@ -29,9 +29,14 @@ SelfPosition.prototype.setup = function(){
 	this.resize();
 	return this;
 }
+SelfPosition.prototype.kill = function(){
+	$(window).off('resize', this.resize);
+}
+
 SelfPosition.prototype.resize = function(){
 	this.rect   = this.element.getBoundingClientRect();
 	this.offset = this.getOffset(this.element);
+	console.log("this.rect", this.rect);
 	this.update();
 }
 SelfPosition.prototype.getOffset = function(element){
@@ -53,7 +58,7 @@ SelfPosition.prototype.update = function(scrollY){
 	dir             				 = this.progress.crt-this.progress.old;
 
 	if(this.progress.crt >= 0 && this.progress.crt <= 1){
-		if(!this.isStageIn && this.progress > this.stageInOffset.min){
+		if(!this.isStageIn && this.progress.crt > this.stageInOffset.min){
 			this.in(dir);
 			this.isStageIn = true;
 		}

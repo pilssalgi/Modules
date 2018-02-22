@@ -1,8 +1,9 @@
 @import '../../../css/base/normalize';
 @import '../../../css/base/font';
+@import '../../../css/base/breakpoint';
 html,body {
   width:100%;
-  height: 100%;
+  // height: 100%;
 }
 
 .wrapIn {
@@ -11,6 +12,7 @@ html,body {
   .cover {
     width:100%;
     padding: 25vh 0;
+    box-sizing:border-box;
     text-align: center;
     p {
       width:100%;
@@ -20,6 +22,9 @@ html,body {
       letter-spacing:0.5em;
       color:#555;
       margin-bottom: 2vw;
+      @media #{$media-smedium}{
+        margin-bottom: 10vw;
+      }
     }
 
     a {
@@ -45,6 +50,22 @@ html,body {
     .galleryRight {
       padding-left: 3vw;
     }
+
+     @media #{$media-smedium}{
+      display: block;
+      .galleryLeft,.galleryRight {
+        width:100%;
+        box-sizing:border-box;
+      }
+      .galleryLeft {
+        padding-right: 0vw;
+      }
+
+      .galleryRight {
+        padding-left: 0vw;
+      }
+    }
+
   }
 
 
@@ -55,6 +76,8 @@ html,body {
   margin:5vw 0;
   .img-wrapIn {
     overflow:hidden;
+    display: block;
+    transform:translate3d(0,0,0);
     img{
       width:100%; height:auto;
       display: inline-block;
@@ -67,11 +90,14 @@ html,body {
   width:100%;
   background-color: #555;
   padding:1vw;
+  box-sizing:border-box;
   code {
     color:#ddd;
     margin:0 auto;
     display: table;
     line-height:1.8em;
+    padding:0 5vw;
+    box-sizing:border-box;
   }
 }
 

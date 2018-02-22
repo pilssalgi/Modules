@@ -1,4 +1,5 @@
 @import '../../../css/base/normalize';
+@import '../../../css/base/breakpoint';
 html,body {
   width:100%;
   height: 100%;
@@ -17,9 +18,6 @@ html,body {
 
 .img-wrap {
   position: relative;
-  // width:500px; 
-  // max-width: 1200px;
-  // height:100%; 
   margin:0 auto;
   display: block;
   box-sizing:border-box;
