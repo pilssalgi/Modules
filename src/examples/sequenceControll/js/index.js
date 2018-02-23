@@ -38,7 +38,7 @@
 
 		if(pageName == 'videoDrawCavasExtended'){
 			var sve = new SequenceVideoExtned($('.wrap'),'video');
-			$('.wrap').css({background:'#faf'});
+			$('.wrap').css({background:'#22658c'});
 			methods.play = function(){
 				sve.play();
 			}
