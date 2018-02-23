@@ -1,0 +1,61 @@
+@import '../../../css/base/normalize';
+@import '../../../css/base/font';
+@import '../../../css/base/breakpoint';
+html,body {
+  width:100%;
+  height: 100%;
+}
+
+.wrap {
+  width:100%; height:100%;
+}
+
+.cover {
+  width:100%;
+  padding: 25vh 0;
+  padding-bottom: 10vh;
+  box-sizing:border-box;
+  text-align: center;
+
+  p {
+    width:100%;
+    margin:0 auto;
+    text-transform: uppercase;
+    font-size:5vw;
+    letter-spacing:0.5em;
+    color:#555;
+    margin-bottom: 2vw;
+    @media #{$media-smedium}{
+      margin-bottom: 10vw;
+    }
+  }
+
+  .buttons,.tags {
+    width:100%;
+    display: flex;
+    justify-content:center;
+    margin: 2vw 0;
+  }
+
+  .buttons {
+    a {
+      display: block;
+      margin:0 10px;
+      padding:10px 20px;
+      border:solid 1px #555;
+    }
+  }
+
+  .tags {
+    a {
+      margin:0 10px;
+      text-decoration:underline;
+      cursor:pointer;
+    }
+  }
+
+  .active {
+    background-color: #555;
+    color:#ddd;
+  }
+}

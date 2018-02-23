@@ -12,7 +12,8 @@ module.exports = {
       'src/js/index.js',
       'src/examples/parallax/js/index.js',
       'src/examples/smoothscroll/js/index.js',
-      'src/examples/dragdropgallery/js/index.js'
+      'src/examples/dragdropgallery/js/index.js',
+      'src/examples/sequenceControll/js/index.js'
       ]
   },
 

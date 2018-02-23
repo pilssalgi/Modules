@@ -2,27 +2,27 @@
 @font-face {
   font-family: "NotoSans-Regular";
   font-style: normal;
-  src: url("../font/notosans/Subset-NotoSansCJKjp-Regular.otf") format('otf'),
-       url("../font/notosans/Subset-NotoSansCJKjp-Regular.woff") format('woff');
+  src: url("/font/notosans/Subset-NotoSansCJKjp-Regular.otf") format('otf'),
+       url("/font/notosans/Subset-NotoSansCJKjp-Regular.woff") format('woff');
 }
 
 @font-face {
   font-family: "NotoSans-Medium";
   font-style: normal;
-  src: url("../font/notosans/Subset-NotoSansCJKjp-Medium.otf") format('otf'),
-       url("../font/notosans/Subset-NotoSansCJKjp-Medium.woff") format('woff');
+  src: url("/font/notosans/Subset-NotoSansCJKjp-Medium.otf") format('otf'),
+       url("/font/notosans/Subset-NotoSansCJKjp-Medium.woff") format('woff');
 }
 @font-face {
   font-family: "NotoSans-Bold";
   font-style: normal;
-  src: url("../font/notosans/Subset-NotoSansCJKjp-Bold.otf") format('otf'),
-       url("../font/notosans/Subset-NotoSansCJKjp-Bold.woff") format('woff');
+  src: url("/font/notosans/Subset-NotoSansCJKjp-Bold.otf") format('otf'),
+       url("/font/notosans/Subset-NotoSansCJKjp-Bold.woff") format('woff');
 }
 
 // @import url("//hello.myfonts.net/count/32af98");
 @font-face {
   font-family:'FuturaLTPro-Book';
-  src: url('../font/futura/futurabt-book.otf') format('opentype');
+  src: url('/font/futura/futurabt-book.otf') format('opentype');
 }
 
 html { 
