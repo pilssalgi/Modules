@@ -83,13 +83,20 @@ function Main($dom,videoID){
 		timerStop();		
 	}
 
+	let render = () =>{
+		this.drawVideo();
+		timer = requestAnimationFrame(render);
+	}
+
 	let timerStart = () => {
 		if(timer)timerStop();
-		timer = setInterval(this.drawVideo,30/1000);
+		// timer = setInterval(this.drawVideo,30/1000);
+		timer = requestAnimationFrame(render);
 	}
 
 	function timerStop(){
-		if(timer)clearInterval(timer);
+		// if(timer)clearInterval(timer);
+		if(timer)cancelAnimationFrame(timer);
 		timer = null;
 	}
 

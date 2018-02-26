@@ -5,8 +5,9 @@
 	var UA						= new UAParser();
 	var isPC					= UA.getDevice().vendor == undefined?true:false;
 
-	var SequenceVideo 			= require('./SequenceVideo');
-	var SequenceVideoExtned = require('./SequenceVideoExtended');
+	var SequenceVideo 					= require('./SequenceVideo');
+	var SequenceVideoExtended 	= require('./SequenceVideoExtended');
+	var SequenceVideoPixi 			= require('./SequenceVideoPixi');
 	$(document).ready(function(){
 		setup();
 	});
@@ -34,10 +35,13 @@
 			gui.add(methods,'play');
 			gui.add(methods,'pause');
 			gui.add(methods,'stop');
+
+			console.log("gui", gui);
 		}
 
-		if(pageName == 'videoDrawCavasExtended'){
-			var sve = new SequenceVideoExtned($('.wrap'),'video');
+		if(pageName == 'videoDrawPixi'){
+			gui = new dat.GUI();
+			var sve = new SequenceVideoPixi($('.wrap'),'video',gui);
 			$('.wrap').css({background:'#22658c'});
 			methods.play = function(){
 				sve.play();
@@ -49,12 +53,36 @@
 				sve.pause();	
 			}
 
-			gui = new dat.GUI();
 			gui.add(methods,'play');
 			gui.add(methods,'pause');
 			gui.add(methods,'stop');
 		}
 		
+
+		if(pageName == 'videoDrawExtended'){
+			var imgs = [];
+			$('.imgs img').each(function(i){
+				imgs[i] = $(this)[0];
+			});
+			gui = new dat.GUI();
+			var sve = new SequenceVideoExtended($('.wrap'),'video',imgs,gui);
+			$('.wrap').css({background:'#aa658c'});
+			methods.play = function(){
+				sve.play();
+			}
+			methods.stop = function(){
+				sve.stop();
+			}
+			methods.pause = function(){
+				sve.pause();	
+			}
+
+			gui.add(methods,'play');
+			gui.add(methods,'pause');
+			gui.add(methods,'stop');
+		}
+		
+
 	}
 
 
