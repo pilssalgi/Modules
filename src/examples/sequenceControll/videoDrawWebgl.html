@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width initial-scale=1">
+    <meta name="description" content="">
+
+    <meta name="copyright" content="" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="">
+    
+    <meta property="og:title" content=""/>
+    <meta property="og:description" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="" id="ogUrl" />
+    <meta property="og:image" content="" />
+
+    <meta name="tw_text" content="" id="twText" />
+    <meta name="tw_url" content="" id="twUrl" />
+    <title></title>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="/js/libs/jquery.min.js"></script>
+    <script src="/js/libs/dat.gui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.1/pixi.min.js"></script>
+    <script type="x-shader/x-vertex" id="vertexshader">
+      varying vec2 vUv;
+      void main()
+      {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
+      }
+
+    </script>
+
+    <script type="x-shader/x-fragment" id="fragmentshader">
+      varying vec2 vUv;
+
+      uniform sampler2D tMask;
+      uniform sampler2D texture;
+      uniform vec2 mouse;
+      uniform float scale;
+      uniform float p;
+      uniform float alpha;
+
+      void main()
+      {
+
+        vec2 tUv = vUv;
+        float uvScale     = scale-1.0;
+        float uvScaleHalf = uvScale*0.5;
+        tUv.x *= 1.0-uvScale;
+        tUv.y *= 1.0-uvScale;
+        tUv.x += uvScaleHalf;
+        tUv.y += uvScaleHalf;
+
+        // tUv -= mouse*uvScaleHalf;
+
+        vec4 tColor   = texture2D(texture, tUv);
+        tColor.r      += (1.0-tColor.r)*(1.-alpha);
+        tColor.g      += (1.0-tColor.g)*(1.-alpha);
+        tColor.b      += (1.0-tColor.b)*(1.-alpha);
+        vec4 mask     = texture2D(tMask, vUv);
+        gl_FragColor  = vec4(tColor.rgb,mask.r);
+      }
+    </script>
+
+    <style>
+      .wrap {
+        transition:background-color 0.5s 0.2s cubic-bezier(.41,.19,.12,1);
+        background-color:#22658c;
+      }
+      .wrapChangeColor {
+        background-color:#ddd !important;
+      }
+
+      .IIV::-webkit-media-controls-play-button,
+      .IIV::-webkit-media-controls-start-playback-button {
+          opacity: 0;
+          pointer-events: none;
+          width: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wrap"></main>
+    <video id="video" width="2500" height="1314" style="display:none; width:100%; height:auto; background:#f00" controls playsinline>
+      <source src="./video/handwrite.mp4" type="video/mp4" />
+    </video>
+    <img src="./video/handwrite-last-black.png" id="video-mask" style="display:none">
+    <div class="imgs" style="display: none">
+      <img src="./img/photo1.jpg">
+      <img src="./img/photo2.jpg">
+      <img src="./img/photo3.jpg">
+      <img src="./img/photo4.jpg">
+    </div>
+  </body>
+  <script src="js/index.js"></script>
+</html>

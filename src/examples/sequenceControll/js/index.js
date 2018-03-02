@@ -8,6 +8,7 @@
 	var SequenceVideo 					= require('./SequenceVideo');
 	var SequenceVideoExtended 	= require('./SequenceVideoExtended');
 	var SequenceVideoPixi 			= require('./SequenceVideoPixi');
+	var SequenceWebgl						= require('./SequenceWebgl');
 	$(document).ready(function(){
 		setup();
 	});
@@ -35,10 +36,9 @@
 			gui.add(methods,'play');
 			gui.add(methods,'pause');
 			gui.add(methods,'stop');
-
-			console.log("gui", gui);
 		}
 
+		// Draw on Pixi
 		if(pageName == 'videoDrawPixi'){
 			gui = new dat.GUI();
 			var sve = new SequenceVideoPixi($('.wrap'),'video',gui);
@@ -58,28 +58,40 @@
 			gui.add(methods,'stop');
 		}
 		
-
-		if(pageName == 'videoDrawExtended'){
+		// Draw on Webgl
+		if(pageName == 'videoDrawWebgl'){
 			var imgs = [];
 			$('.imgs img').each(function(i){
 				imgs[i] = $(this)[0];
 			});
-			gui = new dat.GUI();
-			var sve = new SequenceVideoExtended($('.wrap'),'video',imgs,gui);
-			$('.wrap').css({background:'#aa658c'});
+
+			var videoDom = document.getElementById('video');
+
+			var offset = {
+				// cameraZoomMotion:{start:0.38,end:0.43},
+				// PlaneZoomMotion:{start:0,end:-0.05},
+				// textureZoomMotion:{start:1.3,end:1}
+			};
+
+
+			var sw = new SequenceWebgl($('.wrap')[0],videoDom,imgs[0].getAttribute('src'),offset);
+			
 			methods.play = function(){
-				sve.play();
+				var random = Math.floor(Math.random()*(imgs.length-1));
+				sw.changeImage(imgs[random].getAttribute('src'));
+				sw.play();
 			}
 			methods.stop = function(){
-				sve.stop();
+				sw.stop();
 			}
 			methods.pause = function(){
-				sve.pause();	
-			}
+				sw.pause();	
+				}
 
+			gui = new dat.GUI();
 			gui.add(methods,'play');
-			gui.add(methods,'pause');
-			gui.add(methods,'stop');
+			// gui.add(methods,'pause');
+			// gui.add(methods,'stop');
 		}
 		
 
