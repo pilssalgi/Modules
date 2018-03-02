@@ -23,6 +23,7 @@
     <script src="/js/libs/jquery.min.js"></script>
     <script src="/js/libs/dat.gui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.1/pixi.min.js"></script>
+
     <script type="x-shader/x-vertex" id="vertexshader">
       varying vec2 vUv;
       void main()
@@ -38,9 +39,7 @@
 
       uniform sampler2D tMask;
       uniform sampler2D texture;
-      uniform vec2 mouse;
       uniform float scale;
-      uniform float p;
       uniform float alpha;
 
       void main()
@@ -55,12 +54,11 @@
         tUv.y += uvScaleHalf;
 
         // tUv -= mouse*uvScaleHalf;
-
+        vec4 mask     = texture2D(tMask, vUv);
         vec4 tColor   = texture2D(texture, tUv);
         tColor.r      += (1.0-tColor.r)*(1.-alpha);
         tColor.g      += (1.0-tColor.g)*(1.-alpha);
         tColor.b      += (1.0-tColor.b)*(1.-alpha);
-        vec4 mask     = texture2D(tMask, vUv);
         gl_FragColor  = vec4(tColor.rgb,mask.r);
       }
     </script>
