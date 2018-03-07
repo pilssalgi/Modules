@@ -22,15 +22,27 @@
     <link rel="stylesheet" href="css/main.css">
     <script src="/js/libs/jquery.min.js"></script>
   </head>
-  <body>
+  <body class="SceneVideoControl">
     <main class="wrap">
       <section class="wrapIn">
         @@include('./_cover.html')
+  
+        <div class="videoWrap">
+          <p>scroll on the below video screen to play</p>
+          <div class="btns">
+            <div class="btn">scene1</div>
+            <div class="btn">scene2</div>
+            <div class="btn">scene3</div>
+            <div class="btn">scene4</div>
+            <div class="btn">scene5</div>
+          </div>
+          <video id="video" width="640" height="360" style="display:block; width:100%; height:auto;"  playsinline>
+            <source src="./video/sample.mp4" type="video/mp4" />
+          </video>
+          <figure id="videoBar" class="videoBar"></figure>
+        </div>
       </section>
 
-      <video id="video" width="640" height="360" style="display:block; width:100%; height:auto;" controls playsinline>
-        <source src="./video/sample.mp4" type="video/mp4" />
-      </video>
     </main>
   </body>
   <script src="js/index.js"></script>

@@ -1,0 +1,30 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node', '/usr/local/bin/npm', 'start' ]
+2 info using npm@2.7.4
+3 info using node@v0.12.2
+4 verbose stack /usr/local/lib/node_modules/npm/node_modules/npm-registry-client/node_modules/npm-package-arg/npa.js:6
+4 verbose stack let url
+4 verbose stack ^^^
+4 verbose stack SyntaxError: Unexpected strict mode reserved word
+4 verbose stack     at exports.runInThisContext (vm.js:73:16)
+4 verbose stack     at Module._compile (module.js:443:25)
+4 verbose stack     at Object.Module._extensions..js (module.js:478:10)
+4 verbose stack     at Module.load (module.js:355:32)
+4 verbose stack     at Function.Module._load (module.js:310:12)
+4 verbose stack     at Module.require (module.js:365:17)
+4 verbose stack     at require (module.js:384:17)
+4 verbose stack     at Object.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/dist-tags/add.js:6:11)
+4 verbose stack     at Module._compile (module.js:460:26)
+4 verbose stack     at Object.Module._extensions..js (module.js:478:10)
+5 verbose cwd /Users/wongeun/Work/Web/Modules
+6 error Darwin 17.3.0
+7 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "start"
+8 error node v0.12.2
+9 error npm  v2.7.4
+10 error /usr/local/lib/node_modules/npm/node_modules/npm-registry-client/node_modules/npm-package-arg/npa.js:6
+10 error let url
+10 error ^^^
+10 error Unexpected strict mode reserved word
+11 error If you need help, you may report this error at:
+11 error     <https://github.com/npm/npm/issues>
+12 verbose exit [ 1, true ]
