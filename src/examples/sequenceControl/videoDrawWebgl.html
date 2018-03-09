@@ -56,11 +56,11 @@
 
         // tUv -= mouse*uvScaleHalf;
         vec4 color0    = texture2D(tImage, tUv);
-        vec4 color1    = texture2D(tMask, vUv);
         color0.r      += (1.0-color0.r)*(1.-alpha);
         color0.g      += (1.0-color0.g)*(1.-alpha);
         color0.b      += (1.0-color0.b)*(1.-alpha);
-        gl_FragColor  = vec4(color0.rgb,color1.r);
+        gl_FragColor  = vec4(color0.rgb,texture2D(tMask, vUv).g);
+
       }
     </script>
 

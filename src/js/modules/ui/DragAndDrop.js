@@ -1,8 +1,9 @@
 var $  = require('jQuery');
 var UAParser  = require('ua-parser-js');
 var UA        = new UAParser();
-var isPC      = UA.getDevice().vendor == undefined?true:false;
+var isPC      = UA.getDevice().type == undefined?true:false;
 var isMozilla = UA.getBrowser().name == 'Mozilla'?true:false;
+alert(isPC);
 
 var DragAndDrop = function(target,config){
   var touchMoveOffset = 0,
@@ -31,9 +32,9 @@ var DragAndDrop = function(target,config){
   $.extend(_config,config);
 
   if(isPC){
-    $(target).bind('mousedown',onStart);
+    $(target).on('mousedown',onStart);
   }else{
-    $(target).bind('touchstart',onStart);
+    $(target).on('touchstart',onStart);
     $(target).on('touchmove',onMove);
     $(target).on('touchend',onEnd);
   }

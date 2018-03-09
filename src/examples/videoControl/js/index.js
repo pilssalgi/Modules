@@ -17,7 +17,6 @@ import {TweenMax, Power2, TimelineLite} from "gsap";
   function setup(){
   	var video = document.getElementById('video');
   	var videoBar = document.getElementById('videoBar')
-  	var tweener;
 
   	if(pageName == 'videoControl'){
 	    var vc = new VideoControl(video);

@@ -9,6 +9,7 @@
 	var SequenceVideoExtended 	= require('./SequenceVideoExtended');
 	var SequenceVideoPixi 			= require('./SequenceVideoPixi');
 	var SequenceWebgl						= require('./SequenceWebgl');
+	var SequenceWebgl2 					= require('./SequenceWebgl2');
 	$(document).ready(function(){
 		setup();
 	});
@@ -86,17 +87,17 @@
 			}
 			methods.pause = function(){
 				sw.pause();	
-				}
+			}
 
-			gui = new dat.GUI();
-			gui.add(methods,'play');
 
-			setTimeout(function(){
-				methods.play();
-				console.log("play");
-			},2000);
-			// gui.add(methods,'pause');
-			// gui.add(methods,'stop');
+			videoDom.addEventListener('canplaythrough',onCanPlay);
+
+			function onCanPlay(){
+				// methods.play();
+				gui = new dat.GUI();
+				gui.add(methods,'play');
+				videoDom.removeEventListener('canplaythrough',onCanPlay);
+			}
 		}
 		
 

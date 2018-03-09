@@ -7,7 +7,7 @@ function VideoControl(video){
 
 	function setup(){
 		$(video).on('mousewheel',function(e){
-			frame += -e.deltaY*0.01;
+			frame += -e.deltaY*0.001;
 			e.preventDefault();
 		});
 
@@ -20,7 +20,10 @@ function VideoControl(video){
 				}});
 			});
 		});
-		// video.addEventListener('canplay',onCanPlay);
+		video.addEventListener('loadedmetadata',function(){
+			video.play();
+			video.pause();
+		});
 		render();
 	}
 
@@ -28,6 +31,7 @@ function VideoControl(video){
 		requestAnimationFrame(render);
 		if(frame<0)frame = 0;
 		if(frame>video.duration)frame = video.duration;
+		console.log("frame", frame);
 		if(frame != oldFrame)video.currentTime = frame;
 		oldFrame = frame;
 		videoBar.style.transform = "translateX("+(video.currentTime/video.duration)*100+"%)";
