@@ -1,0 +1,45 @@
+@import '../../../css/base/normalize';
+@import '../../../css/base/breakpoint';
+html,body {
+  width:100%;
+  height: 100%;
+}
+
+.wrap {
+  position: relative;
+  width:100%;
+  height:100%;
+  text-align: center;
+
+  .wrap-inner {
+    width: 100%;
+  }
+}
+
+.img-wrap {
+  position: relative;
+  margin:0 auto;
+  display: block;
+  box-sizing:border-box;
+  overflow:hidden;
+  perspective: 1000px;
+  width: 50%;
+  border:solid 1px;
+
+  h3 {
+    position:absolute;
+    color:#fff;
+    text-transform: uppercase;
+    font-weight:normal;
+    letter-spacing: 0.1em;
+    font-size:40px;
+    top:50%;
+    text-align: center;
+    width:100%;
+  }
+  img{
+    width:100%; height:auto;
+    display: inline-block;
+  }
+}
+

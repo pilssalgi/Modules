@@ -18,11 +18,13 @@
 	var SScroll=null,palax;
 	var ParallaxModules = {
 		rotateZoom:require('./Parallax_Zoom'),
-		fadeAcc:require('./Parallax_FadeAcc')
+		fadeAcc:require('./Parallax_FadeAcc'),
+		intersectionObserver:('./Parallax_IntersectionObserver')
 	}
 	var ParallaParams = {
 		rotateZoom 	: {degree:10,zoom:300,speed:0.02,fadeAcc:true,fadeAccOffset:300},
-		fadeAcc 		: {showUpAcc:300}
+		fadeAcc 		: {showUpAcc:300},
+		intersectionObserver : {}	
 	}
 
 	$(document).ready(function(){

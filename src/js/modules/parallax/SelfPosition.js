@@ -36,7 +36,6 @@ SelfPosition.prototype.kill = function(){
 SelfPosition.prototype.resize = function(){
 	this.rect   = this.element.getBoundingClientRect();
 	this.offset = this.getOffset(this.element);
-	console.log("this.rect", this.rect);
 	this.update();
 }
 SelfPosition.prototype.getOffset = function(element){

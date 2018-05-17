@@ -14,7 +14,8 @@ module.exports = {
       'src/examples/smoothscroll/js/index.js',
       'src/examples/dragdropgallery/js/index.js',
       'src/examples/sequenceControl/js/index.js',
-      'src/examples/videoControl/js/index.js'
+      'src/examples/videoControl/js/index.js',
+      'src/examples/intersectionObserver/js/index.js'
       ]
   },
 

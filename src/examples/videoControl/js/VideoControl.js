@@ -31,7 +31,6 @@ function VideoControl(video){
 		requestAnimationFrame(render);
 		if(frame<0)frame = 0;
 		if(frame>video.duration)frame = video.duration;
-		console.log("frame", frame);
 		if(frame != oldFrame)video.currentTime = frame;
 		oldFrame = frame;
 		videoBar.style.transform = "translateX("+(video.currentTime/video.duration)*100+"%)";
