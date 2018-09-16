@@ -86,11 +86,8 @@ var DragAndDrop = function(target,config){
     if(isPC){
       $(document).off('mousemove',onMove);
       $(document).off('mouseup',onEnd);
-      // $(document).off('mouseout',onEnd);
       if(_config.targetOut)$(target).off('mouseout',onEnd);
     }else{
-      // $(target).off('touchmove',onMove);
-      // $(target).off('touchend',onEnd);
     }
   }
   function getPageInfo(e){

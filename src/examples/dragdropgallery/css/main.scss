@@ -21,7 +21,7 @@ main {
     display: inline-flex;
 
     .dragAndDrop_item {
-      width:300px;
+      min-width:300px;
       box-sizing:border-box;
       cursor:ew-resize;
 

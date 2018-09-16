@@ -81,10 +81,15 @@ function DragAndDropGallery($wrap,option){
 		size.halfWidth = size.width * 0.5;
 		size.margin = 0;
 		size.all = 0;//(($item.innerWidth()+size.margin)*$item.length);
+
+		// wrapInner.width = (($item.innerWidth()+size.margin)*$item.length);
+
 		for(var i=0; i<items.length; i++){
 			size.all+= items[i].dom.innerWidth();
 		}
-		
+
+		wrapInner.style.width = size.all + 'px';
+
 		deviation = size.all - $wrap.width();
 		if(!config.reverse){
 			size.start = 0;
