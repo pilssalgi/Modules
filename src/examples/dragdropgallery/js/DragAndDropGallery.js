@@ -70,9 +70,9 @@ function DragAndDropGallery($wrap,option){
 		}
 
 		if($item[0].tagName.toLowerCase() == 'a' && isPC){
-			$item.on('click',function(e){
-				if(!isClick)e.preventDefault();
-			});
+			// $item.on('click',function(e){
+			// 	if(!isClick)e.preventDefault();
+			// });
 		}
 	}
 

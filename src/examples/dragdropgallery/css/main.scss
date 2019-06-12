@@ -15,6 +15,11 @@ main {
   }
 }
 
+.preventClick {
+  pointer-events: none;
+  cursor:ew-resize;
+}
+
 .dragAndDrop {
   // overflow: hidden;
   .dragAndDrop_in {
@@ -23,7 +28,7 @@ main {
     .dragAndDrop_item {
       min-width:300px;
       box-sizing:border-box;
-      cursor:ew-resize;
+      // cursor:ew-resize;
 
       img {
         width:100%;
