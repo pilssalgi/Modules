@@ -15,8 +15,7 @@ module.exports = {
       'src/examples/dragdropgallery/js/index.js',
       'src/examples/sequenceControl/js/index.js',
       'src/examples/videoControl/js/index.js',
-      'src/examples/intersectionObserver/js/index.js',
-      'src/examples/masonry/js/index.js',
+      'src/examples/intersectionObserver/js/index.js'
       ]
   },
 
