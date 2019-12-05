@@ -1,5 +1,7 @@
 @import '../../../css/base/normalize';
 @import '../../../css/base/breakpoint';
+@import '../../../css/base/transition';
+
 html,body {
   width:100%;
   height: 100%;
@@ -23,8 +25,23 @@ html,body {
   box-sizing:border-box;
   overflow:hidden;
   perspective: 1000px;
-  width: 50%;
-  border:solid 1px;
+  width: 90%;
+  
+
+  img{
+    width:100%; height:auto;
+    display: inline-block;
+    transform: translate3d(0,50%,0);
+    opacity: 0.1;
+    transition: opacity 0.3s $transition1, transform 0.8s $transition1;
+  }
+
+  &.on {
+    img {
+      transform: translate3d(0,0%,0);
+      opacity: 1;
+    }
+  }
 
   h3 {
     position:absolute;
@@ -37,9 +54,6 @@ html,body {
     text-align: center;
     width:100%;
   }
-  img{
-    width:100%; height:auto;
-    display: inline-block;
-  }
+
 }
 

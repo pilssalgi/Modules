@@ -2,6 +2,7 @@
   var SelfPosition = require('../../../js/modules/parallax/SelfPosition');
   var FakeScroll  = require('../../../js/modules/ui/FakeScroll');
   var throttle    = require('lodash/throttle');
+  var FlickrLoader  = require('../../../js/modules/api/FlickrLoader');
   function getRandomImage(tags,callBack){
     $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?",
     { tags: tags,tagmode: "any",format: "json" },
@@ -30,7 +31,7 @@
 
   let threshold = [];
 
-  getRandomImage('tokyo',function(datas){
+  FlickrLoader('',(datas)=>{
     for (let i=0; i<=1.0; i+= 0.01) {
       threshold.push(i);
     }
@@ -51,7 +52,7 @@
       }
       var title = $('<h3>'+datas[i].title+'</h3>').appendTo(imgWrap);
       observers[i] = {
-        intersection:new IntersectionObserver(intersectionCallback,{root:null,rootMargin: "0px",threshold: threshold}),
+        intersection:new IntersectionObserver(intersectionCallback,{root:null,rootMargin:'0%',threshold: 0}),
         img:img,
         offset:{x:0,y:0},
         position:{x:0,y:0}
@@ -60,13 +61,23 @@
     }
   });
 
+  // getRandomImage('tokyo',function(datas){
+    
+  // });
+
   function intersectionCallback(entries) {
     entries.forEach(function(entry) {
-      let box = entry.target;
-      let id = box.id;
-      let rect = entry.boundingClientRect;
-      observers[id].offset.y = (rect.top+rect.height) / (window.innerHeight+rect.height);
-      if(id==3)console.log(rect,entry.intersectionRect);
+      let target = entry.target;
+      let id = target.id;
+      // let rect = entry.boundingClientRect;
+      // console.log("entry", entry);
+      if(entry.isIntersecting){
+        target.classList.add('on');
+      }else{
+        target.classList.remove('on');
+      }
+      // observers[id].offset.y = (rect.top+rect.height) / (window.innerHeight+rect.height);
+      // if(id==3)console.log(rect,entry.intersectionRect);
       // translate3d(observers[id].img,0,(100-observers[id].offset.y*100)+'px',0);
 
     });

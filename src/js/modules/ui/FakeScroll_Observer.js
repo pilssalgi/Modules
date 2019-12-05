@@ -73,7 +73,7 @@ let FakeScroll = function(target,speed,option){
   function update(){
     scroll.y = window.pageYOffset || document.documentElement.scrollTop;
     this.position.y += (scroll.y-this.position.y)*this.speed;
-    this.position.y = Number(this.position.y.toFixed(1));
+    this.position.y = Math.round(this.position.y * 10) / 10; 
     dis = Math.abs(scroll.y-this.position.y);
     console.log("dis", dis);
     if(dis < 1){
