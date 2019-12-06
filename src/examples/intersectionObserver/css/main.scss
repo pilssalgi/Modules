@@ -28,18 +28,25 @@ html,body {
   width: 90%;
   
 
-  img{
+  img {
     width:100%; height:auto;
     display: inline-block;
-    transform: translate3d(0,10%,0);
-    opacity: 0.1;
+    transform: translate3d(0,0,0);
+    opacity: 1;
     transition: opacity 0.3s $transition1, transform 0.8s $transition1;
   }
 
-  &.on {
-    img {
-      transform: translate3d(0,0%,0);
-      opacity: 1;
+  &.hideUp {
+    img { 
+      transform: translate3d(0,-10%,0);
+      opacity: 0;
+    }
+  }
+
+  &.hideDown {
+    img { 
+      transform: translate3d(0,10%,0);
+      opacity: 0;
     }
   }
 

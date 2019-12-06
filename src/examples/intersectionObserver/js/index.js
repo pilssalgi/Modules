@@ -50,9 +50,15 @@ const FlickrLoader  = require('../../../js/modules/api/FlickrLoader');
         let target = entry.target;
         let id = target.id;
         if(entry.isIntersecting){
-          target.classList.add('on');
+          target.classList.remove('hideUp');
+          target.classList.remove('hideDown');
         }else{
-          target.classList.remove('on');
+          
+          if(entry.boundingClientRect.bottom < 0){ // hide up
+            target.classList.add('hideUp');
+          }else{
+            target.classList.add('hideDown');
+          }
         }
       });
     };
