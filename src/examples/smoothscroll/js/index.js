@@ -1,6 +1,7 @@
+import SmoothScroll from '../../../js/modules/ui/SmoothScroll';
+
 (function () {
   var SelfPosition = require('../../../js/modules/parallax/SelfPosition');
-  var FakeScroll  = require('../../../js/modules/ui/FakeScroll');
   var throttle    = require('lodash/throttle');
   function getRandomImage(tags,callBack){
     $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?",

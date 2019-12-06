@@ -12,6 +12,7 @@
   "license": "",
   "private": true,
   "dependencies": {
+    "intersection-observer": "^0.7.0",
     "jquery": "^3.2.1",
     "lodash": "^4.17.4",
     "pixi.js": "^4.7.0"

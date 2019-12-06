@@ -1,11 +1,14 @@
+import SmoothScroll from '../../../js/modules/ui/SmoothScroll';
+
 (function () {
 	var throttle			= require('lodash/throttle');
 	var debounce			= require('lodash/debounce');
-	var SmoothScroll	= require('../../../js/modules/ui/FakeScroll');
+	
 	var FlickrLoader	= require('../../../js/modules/api/FlickrLoader');
 	var UAParser			= require('ua-parser-js');
 	var UA						= new UAParser();
 	var isPC					= UA.getDevice().vendor == undefined?true:false;
+
 
 	var wrap 			= $('.wrapIn'),
 			wrapLeft	= $('.galleryLeft'),
