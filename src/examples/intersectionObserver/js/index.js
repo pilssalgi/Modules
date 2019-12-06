@@ -6,8 +6,12 @@ const FlickrLoader  = require('../../../js/modules/api/FlickrLoader');
   const $wrap = document.querySelector('.wrap');
   const $wrapIn = document.querySelector('.wrap-inner');
   
-  const observer = new IntersectionObserver();
-  const ss = new SmoothScroll($wrapIn,0.1);
+  
+  const observer = new IntersectionObserver({
+    root:null, // scroll area, null = body
+    rootMargin: '0px', // -100~100  px, %
+    threshold:0 // 0 ~ 100..n
+  });
 
   let loadedCount = 0;
 
@@ -27,20 +31,15 @@ const FlickrLoader  = require('../../../js/modules/api/FlickrLoader');
       img.src = datas[i].url;
       
       img.onload = function(){
-        $(this).attr({width:this.width,height:this.height});
         loadedCount++;
         if(loadedCount == datas.length){
-
-          //update fake scroll
-          ss.onResize();
+          const ss = new SmoothScroll($wrapIn,{speed:0.08});  
         }
       }
-      
       
       /*
         add image to observer
       */
-
       observer.add($imgWrap);
       // observer.remove(imgWrap[0]);
     }

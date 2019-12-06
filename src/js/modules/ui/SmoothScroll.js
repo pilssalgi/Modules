@@ -35,7 +35,8 @@ export default class SmoothScroll {
     window.addEventListener('resize',this._onResize);
     window.addEventListener('scroll',this._onScroll);
 
-    this._onResize();
+    this.onResize();
+    this.onResize();
   }
 
   onScroll(){
@@ -55,13 +56,14 @@ export default class SmoothScroll {
     this.position.y += (this.scroll.y-this.position.y)*this.config.speed;
     this.position.y = Math.round(this.position.y * 10) / 10;
     const dis = (this.scroll.y-this.position.y);
-    if(Math.abs(dis) < 1){
+    if(Math.abs(dis) < 0.2){
       this.ticking = false;
+      this.position.y = this.scroll.y;
     }else{
       requestAnimationFrame(this.update.bind(this));
     }
     this.config.onUpdate();
-    this.dom.style.transform ="translate3d(0px,"+(-this.position.y)+"px,0)";
+    this.dom.style.transform ="translate3d(0,"+(-this.position.y)+"px,0)";
   }
 
   kill(){
