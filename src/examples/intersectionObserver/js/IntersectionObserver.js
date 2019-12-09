@@ -22,6 +22,8 @@ export default class IntersectionObserve {
 	  }
 
 	  thresholds.push(0);
+	  
+	  this.config.threshold = thresholds;
 
 	  this.intersectionObsever = new IntersectionObserver((...arg)=>{this.onUpdate(...arg);},this.config);
 	}

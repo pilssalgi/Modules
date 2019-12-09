@@ -31,60 +31,19 @@ import SmoothScroll from '../../../js/modules/ui/SmoothScroll';
       img.src = datas[i].url;
       imgWrap.append(img);
       img.onload = function(){
-        $(this).attr({width:this.width,height:this.height});
         loadedCount++;
         if(loadedCount == datas.length){
           setup();
-          setTimeout(function(){$(window).trigger('resize');},500);
         }
       }
       var title = $('<h3>'+datas[i].title+'</h3>').appendTo(imgWrap);
       imgs.push({wrap:imgWrap,img:img,y:0,titleY:0,title:title[0],self:new SelfPosition(img).setup()});
-
     }
   });
 
   function setup(){
-    // $(window).on('scroll',onScroll);
-    new FakeScroll(wrapIn[0],0.1);
-    // update();
+    new SmoothScroll(wrapIn[0],{speed:0.05});
   }
 
-  var ticking = false;
-
-  function onScroll(){
-    scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    if(!ticking){
-      requestAnimationFrame(update);
-    }
-    ticking = true;
-  }
-
-  function update(){
-    top += (scrollTop-top) * 0.1;
-    
-    for(var i=0; i<imgs.length; i++){
-      var self = imgs[i].self;
-      self._update();
-      var y = -5+self.progress*10;
-      imgs[i].y += (y-imgs[i].y)*0.1;
-      var titleY = 100-self.progress*200;
-      imgs[i].titleY += (titleY-imgs[i].titleY)*0.1;
-      if(self.progress < 2 && self.progress > -1){
-        imgs[i].img.style.transform = translate3d('0px',Number(imgs[i].y.toFixed(3))+'%',200);
-        imgs[i].title.style.transform = translate3d('0px',Number(imgs[i].titleY.toFixed(3))+'px',0);
-      }
-    }
-
-    if(Math.abs(top-scrollTop)<0.01){
-      ticking = false;
-    }else{
-      requestAnimationFrame(update);
-    }
-  }
-
-  function translate3d(x,y,z){
-    return 'translate3d('+x+','+y+','+z+'px)';
-  }
 
 }).call(this);

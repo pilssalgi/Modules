@@ -46,13 +46,13 @@ const FlickrLoader  = require('../../../js/modules/api/FlickrLoader');
 
     observer.onUpdate = (entries,observer)=>{
       entries.forEach(function(entry) {
+        console.log("entry", entry);
         let target = entry.target;
         let id = target.id;
         if(entry.isIntersecting){
           target.classList.remove('hideUp');
           target.classList.remove('hideDown');
         }else{
-          
           if(entry.boundingClientRect.bottom < 0){ // hide up
             target.classList.add('hideUp');
           }else{

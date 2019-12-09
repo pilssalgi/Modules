@@ -9,7 +9,6 @@ import SmoothScroll from '../../../js/modules/ui/SmoothScroll';
 	var UA						= new UAParser();
 	var isPC					= UA.getDevice().vendor == undefined?true:false;
 
-
 	var wrap 			= $('.wrapIn'),
 			wrapLeft	= $('.galleryLeft'),
 			wrapRight	= $('.galleryRight');
@@ -80,7 +79,7 @@ import SmoothScroll from '../../../js/modules/ui/SmoothScroll';
 				loadCount++;
 				if(loadCount == datas.length){
 					isLoading = false;
-					SScroll.sizeUpdate();
+					SScroll.onResize();
 
 					if(!palax)palax = new ParallaxModules[pageName]($('.img-wrap'),ParallaParams[pageName]);
 					else palax.setList($('.img-wrap'));
