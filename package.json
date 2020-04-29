@@ -13,7 +13,7 @@
   "private": true,
   "dependencies": {
     "intersection-observer": "^0.7.0",
-    "jquery": "^3.2.1",
+    "jquery": "^3.5.0",
     "lodash": "^4.17.15",
     "pixi.js": "^4.7.0"
   },
