@@ -28,7 +28,7 @@
     "browserify": "^11.2.0",
     "del": "^2.2.1",
     "es6-promise": "^3.0.2",
-    "gsap": "^1.20.3",
+    "gsap": "^3.6.0",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.0",
     "gulp-babel": "^7.0.0",
